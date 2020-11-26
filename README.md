@@ -22,23 +22,38 @@ The project is delivered via this GitHub [repository](https://github.com/andkoc0
 
 In this README.md file I have incorporated the research and described the project progress. It is illustrated with the applied concepts and methods together with relevant code snippets. Finally, inside the README.md I have included also references to sources being consulted for this assignment.
 
-### Accessing and viewing the Project
-
-To be updated...
-...
+The project is based predominantly and heavily on the lecture materials. The reference to the lecture materials is not specifically provided. Other generic resources are listed at the bottom of this README.md file. More specific references are provided when applicable.
 
 ### Project objectives
-
 
 The objective of the is to develop a web service to access, display, modify etc. data from an API using Flask.
 
 The goal of the project is to produce a web app that will do the following:
 
-- Consuming a RESTful API, either in Python (your server) or  javascript (web page) 
+- Consuming a RESTful API, either in Python (your server) or  javascript (web page)
 - Running a Server
 - Web frontend to display data and interact with server (If the project requires it).
 
 The detailed project instruction can be found in the [file]<https://github.com/andkoc001/Data_Rep_Project.git/blob/main/Project%20Description.pdf>  
+
+___
+
+## The Project
+
+### Setting the environment
+
+The project requires external Python libraries. In order to preserve the same condition _virtual environment_ is created, that manages additional libraries.
+
+The following script (from [REST API Crash Course](https://docs.google.com/document/d/1v0l4TC2ZyFYyk6Y0ggFw86li2F6cwr5GLuTUyrzSpT4/edit#)) should be run in your terminal to create the virtual environment and activate it. It will also install the required libraries and list them in the requirements.txt file.
+
+```
+python3 -m venv .venv  
+source .venv/bin/activate  
+pip3 install flask  
+pip3 freeze > requirements.txt
+```
+
+The virtual environment should be kept running.
 
 ___
 
@@ -52,12 +67,12 @@ General, high-level, reference sources are listed below. References to specific 
 
 ### Regarding Python environment
 
-- Python 3 Documentation. [online] Available at: <https://docs.python.org/3/> [Accessed November 2019].
-- Flask - ...
+- Python 3 Documentation. [online] Available at: <https://docs.python.org/3/> [Accessed November 2020].
+- Flask User Guide - [online] Available at: <https://flask.palletsprojects.com/en/1.1.x/#user-s-guide> [Accessed November 2020].
 
 ### Regarding the accessed API
 
-- ...
+- REST API Crash Course - https://youtu.be/qbLc5a9jdXo and https://docs.google.com/document/d/1v0l4TC2ZyFYyk6Y0ggFw86li2F6cwr5GLuTUyrzSpT4/edit#
 
 ___
 
