@@ -69,6 +69,8 @@ General, high-level, reference sources are listed below. References to specific 
 
 - Python 3 Documentation. [online] Available at: <https://docs.python.org/3/> [Accessed November 2020].
 - Flask User Guide - [online] Available at: <https://flask.palletsprojects.com/en/1.1.x/#user-s-guide> [Accessed November 2020].
+- A beginner's guide to building a simple database-backed Flask website on PythonAnywhere - [online] Available at: <https://blog.pythonanywhere.com/121/> [Accessed November 2020].
+- Caleb Curry - REST API Crash Course.[online] Available at: <https://docs.google.com/document/d/1v0l4TC2ZyFYyk6Y0ggFw86li2F6cwr5GLuTUyrzSpT4/edit#> [Accessed November 2020].
 
 ### Regarding the accessed API
 
