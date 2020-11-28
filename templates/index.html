@@ -6,41 +6,30 @@
 </head>
 
 <body>
-    <h1>Home</h1>
-    <h2>test a server</h2>
+    <h1>Welcome to my Data Representation Project</h1>
+    </br>
+
+    <h2>Local data server</h2>
     <ul>
-        <li><a href="http://127.0.0.1:5000/a_testsimpleserver.html">test a_simpleserver</a></li>
+        <li>test <a href="http://127.0.0.1:5000/server/simple_server.html">simple_server</a></li>
     </ul>
-    <h2>test b server</h2>
+    </br>
+
+    <h2>External data server</h2>
     <ul>
-        <li><a href="http://127.0.0.1:5000/b01_ajaxgetall.html">test get all</a></li>
+        <li><a href="http://127.0.0.1:5000/server/get_books.html">Books</a></li>
+    </ul>
+    </br>
+
+    <h2>Bitcoin</h2>
+    <ul>
+        <li>Check the current value of a bitcoin <a href="http://127.0.0.1:5000/server/bitcoin.html">here</a></li>
     </ul>
 
-
-    <button onclick="readJSON()">get bitcoin value from coindesk.com </button>
-    <div id="output"></div>
-
-    <script>
-        function readJSON() {
-            $.ajax({
-                "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
-                "method": "GET",
-                "data": "",
-                "dataType": "JSON",
-                "success": function (result) {
-                    //console.log(result);
-                    var rate = result.bpi.EUR.rate
-                    document.getElementById("output").innerText = rate;
-                },
-                "error": function (xhr, status, error) {
-                    //console.log("error: " + status + " msg:" + error);
-                    var rate = result.bpi.EUR.rate
-                    document.getElementById("output").innerText = rate;
-                }
-            });
-
-        }
-    </script>
+    <h2>Testing POST method </h2>
+    <ul>
+        <li><a href="http://127.0.0.1:5000/server/post_test.html">POST test</a></li>
+    </ul>
 
 </body>
 

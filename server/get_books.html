@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <title>Get books</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Get data from external server</h1>
+    <p>The books from andrewbeatty1.pythonanywhere.com/books</p>
+    <button onclick="getAll()">Get data</button>
+    </br>
+    <div id="output"></div>
+
+</body>
+<script>
+    function getAll() {
+        $.ajax({
+            "url": "http://andrewbeatty1.pythonanywhere.com/books",
+            "method": "GET",
+            "data": "",
+            "dataType": "JSON",
+            "success": function (result) {
+                //console.log(result);
+                document.getElementById("output").innerText = JSON.stringify(result);
+
+            },
+            "error": function (xhr, status, error) {
+                console.log("error: " + status + " msg:" + error);
+            }
+        });
+    }        
+</script>
+
+</html>

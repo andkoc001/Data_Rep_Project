@@ -17,10 +17,14 @@
 from flask import Flask, jsonify, request, abort, make_response, render_template
 import json
 
-app = Flask(__name__, static_url_path='/', static_folder='/server/')
+app = Flask(__name__, static_url_path='', static_folder='/')
 
 
-# for testing
+# ----------------
+# Data for testing
+# ----------------
+
+# local stored data
 cars = [
     {
         "reg": "181 G 1234",
@@ -41,6 +45,10 @@ cars = [
         "price": 8000
     }
 ]
+
+# data stored on the external server
+# http://andrewbeatty1.pythonanywhere.com/books
+# books =
 
 # -----------
 # Flask routs
@@ -123,7 +131,8 @@ def delete_car(reg):
 # Error handling with Flask routes
 # --------------------------------
 
-
+# disabled for debugging purposes
+'''
 @app.errorhandler(404)
 def not_found404(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
@@ -132,7 +141,7 @@ def not_found404(error):
 @app.errorhandler(400)
 def not_found400(error):
     return make_response(jsonify({'error': 'Bad Request'}), 400)
-
+'''
 
 # -------------------------------
 # GitHub with PythonAnywhere sync

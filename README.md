@@ -18,19 +18,30 @@ This GitHub repository documents my research, project progress (git version cont
 
 This project avail of several tools commonly used in the industry, such as Python programing language, Flask, Git, etc.
 
-The project is delivered via this GitHub [repository](https://github.com/andkoc001/Data_Rep_Project.git).
+The project is delivered as a Web App, deployed on the PythonAnywhere server. It is accessible at the following address: [andkoc001.pythonanywhere.com](andkoc001.pythonanywhere.com).
+
+The project resources are also available on GitHub [repository](https://github.com/andkoc001/Data_Rep_Project.git).
 
 In this README.md file I have incorporated the research and described the project progress. It is illustrated with the applied concepts and methods together with relevant code snippets. Finally, inside the README.md I have included also references to sources being consulted for this assignment.
 
-The project is based predominantly and heavily on the lecture materials. The reference to the lecture materials is not specifically provided. Other generic resources are listed at the bottom of this README.md file. More specific references are provided when applicable.
+The project is based predominantly and heavily on the lecture materials. The reference to the lecture materials is not specifically provided. Other resources are listed at the bottom of this README.md file. More specific references are provided the text body when applicable.
 
-### Viewing Project
+### To access the Project
 
 __Web App__
 
-The Web App requires libraries listed in the requirements.txt.
+For viewing it is recommended to access the project deployed on [andkoc001.pythonanywhere.com](andkoc001.pythonanywhere.com).
+
+__Local viewing__ 
+
+ Ensure all the required modules are installed. The Web App requires libraries listed in the requirements.txt. Run the below command (the requirements.txt is on taken from the server):
+
+```bash
+pip3 install -r requirements.txt
+```
 
 In order to open the web app, execute the following commands in the terminal
+Execute the server by running the `app.py` program.
 
 A) Linux
 
@@ -79,20 +90,6 @@ pip3 freeze > requirements.txt
 
 The virtual environment should be kept running.
 
-### Setting the environment on a server
-
-Ensure all the required modules are installed. Run the below command (the requirements.txt is on taken from the server):
-
-```bash
-pip3 install -r requirements.txt
-```
-
-Execute the server by running the `app.py` program.
-
-```bash
-python3 app.py
-```
-
 ### Testing the connection
 
 You can test the connection by checking the http responses with the Curl, for example:
@@ -100,6 +97,10 @@ You can test the connection by checking the http responses with the Curl, for ex
 ```bash
 curl -i http://localhost:5000/
 ```
+
+### Creating a project directory and virtual environment
+
+Follow the steps from [Learning flask ep.1](https://pythonise.com/series/learning-flask/your-first-flask-app).
 
 ___
 
