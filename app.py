@@ -13,18 +13,45 @@
 # -------------------------------------
 
 
-import git
-from flask import Flask, request
-from flask import Flask, jsonify,  request, abort, make_response
+# import git
+from flask import Flask, jsonify, request, abort, make_response, render_template
+import json
 
-app = Flask(__name__,
-            static_url_path='',
-            static_folder='../')
+app = Flask(__name__, static_url_path='/', static_folder='/server/')
 
+
+# for testing
+cars = [
+    {
+        "reg": "181 G 1234",
+        "make": "Ford",
+        "model": "Modeo",
+        "price": 18000
+    },
+    {
+        "reg": "11 MO 1234",
+        "make": "Nissan",
+        "model": "Almera",
+        "price": 8000
+    },
+    {
+        "reg": "test",
+        "make": "Nissan",
+        "model": "Almera",
+        "price": 8000
+    }
+]
 
 # -----------
 # Flask routs
 # -----------
+
+
+@app.route('/')
+def home():
+    # return "<h1>Welcome</h1>"
+    return render_template("index.html")
+
 
 @app.route('/cars', methods=['GET'])
 def get_cars():
@@ -92,6 +119,11 @@ def delete_car(reg):
     return jsonify({'result': True})
 
 
+# --------------------------------
+# Error handling with Flask routes
+# --------------------------------
+
+
 @app.errorhandler(404)
 def not_found404(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
@@ -107,6 +139,7 @@ def not_found400(error):
 # -------------------------------
 # Based on: https://medium.com/@aadibajpai/deploying-to-pythonanywhere-via-github-6f967956e664
 
+'''
 @app.route('/update_server', methods=['POST'])
 def webhook():
     if request.method == 'POST':
@@ -116,7 +149,7 @@ def webhook():
         return 'Updated PythonAnywhere successfully', 200
     else:
         return 'Wrong event type', 400
-
+'''
 
 # ------------------
 # Check dependencies

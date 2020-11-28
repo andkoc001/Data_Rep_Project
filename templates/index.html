@@ -1,0 +1,47 @@
+<html>
+
+<head>
+    <title>Data Rep</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Home</h1>
+    <h2>test a server</h2>
+    <ul>
+        <li><a href="http://127.0.0.1:5000/a_testsimpleserver.html">test a_simpleserver</a></li>
+    </ul>
+    <h2>test b server</h2>
+    <ul>
+        <li><a href="http://127.0.0.1:5000/b01_ajaxgetall.html">test get all</a></li>
+    </ul>
+
+
+    <button onclick="readJSON()">get bitcoin value from coindesk.com </button>
+    <div id="output"></div>
+
+    <script>
+        function readJSON() {
+            $.ajax({
+                "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
+                "method": "GET",
+                "data": "",
+                "dataType": "JSON",
+                "success": function (result) {
+                    //console.log(result);
+                    var rate = result.bpi.EUR.rate
+                    document.getElementById("output").innerText = rate;
+                },
+                "error": function (xhr, status, error) {
+                    //console.log("error: " + status + " msg:" + error);
+                    var rate = result.bpi.EUR.rate
+                    document.getElementById("output").innerText = rate;
+                }
+            });
+
+        }
+    </script>
+
+</body>
+
+</html>
