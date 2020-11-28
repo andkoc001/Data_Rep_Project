@@ -15,6 +15,7 @@
 </body>
 <script>
     function getAll() {
+        document.getElementById("output").innerText = "Please wait...";
         $.ajax({
             "url": "http://andrewbeatty1.pythonanywhere.com/books",
             "method": "GET",
@@ -22,8 +23,10 @@
             "dataType": "JSON",
             "success": function (result) {
                 //console.log(result);
-                document.getElementById("output").innerText = JSON.stringify(result);
-
+                document.getElementById("output").innerText = "";
+                for (item of result) {
+                    document.getElementById("output").innerText += JSON.stringify(item) + "\n ";
+                }
             },
             "error": function (xhr, status, error) {
                 console.log("error: " + status + " msg:" + error);
