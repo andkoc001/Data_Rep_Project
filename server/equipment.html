@@ -1,4 +1,8 @@
-<!-- Inspired by and based on http://elizabethdaly.eu.pythonanywhere.com/shopper5.html -->
+<!-- Data Representation Project, GMIT 2020 -->
+<!-- Author: Andrzej Kocielski, G00376291@gmit.ie -->
+<!-- Lecturer: dr Andrew Beatty -->
+
+<!-- Inspired by http://elizabethdaly.eu.pythonanywhere.com/shopper5.html -->
 
 <!DOCTYPE html>
 <html>
@@ -6,75 +10,96 @@
 
 <head>
     <title>Data Rep Project - Autonomous Maintenance</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Representation Project, GMIT 2020">
+    <meta name="author" content="Andrzej Kocielski, G00376291@gmit.ie">
 
+    <!-- Bootstrap style file -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <!-- Reference to external style file (overrides the bootstrap style, because it is placed below in this file -->
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <!-- AJAX reference -->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 
 </head>
 
 <body>
-    <div class="header">
-        <h1>Machinery Autonomous Maintenance</h1>
-        <img src="https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy"
-            alt="Source: https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy"
-            style="width:300px" /></br>
-        Image source: <a class="caption" href="https://diginomica.com/fail-early-fail-often-manufacturing-mantra-ai-age"
-            target="_blank">diginomica.com</a>
-    </div>
 
-    <div class="topnav">
-        <a href="#">Equipment</a>
-        <a href="#">Suppliers</a>
-        <a href="#">GMIT</a>
-        <a href="#">GitHub</a>
-        <a href="#">PythonAnywhere</a>
-    </div>
-
-    <!-- Two columns layout -->
-    <div class="row">
-        <!-- Left column -->
-        <div class="column left">
-            <div class="header">Add new equipment</div>
-            <div style="text-align: center;">
-                <button id="showCreateButton" type="button" class="btn btn-primary btn-lg"
-                    onclick="showCreate()">Create</button>
+    <header>
+        <div>
+            <h1 class="logo_title">Equipment Autonomous Maintenance</h1>
+            <div class="picture">
+                <img src="https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy"
+                    alt="Source: https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy" /></br>
+                <div class="caption"> Image source: <a
+                        href="https://diginomica.com/fail-early-fail-often-manufacturing-mantra-ai-age"
+                        target="_blank">diginomica.com</a></div>
             </div>
         </div>
 
-        <!-- Right column -->
-        <div class="column middle">
+        <!-- Top navigation bar -->
+        <nav id="topnav">
+            <!-- The top bar menu consists of unordered list (ul) elements (list items, li), styled with the CSS -->
+            <ul class="menu">
+                <li><a href="#">Equipment</a></li> <!-- This link is active, but does not require reloading the page -->
+                <li><a href="suppliers.html">Suppliers</a></li>
+                <li><a target="_blank" href="https://gmit.ie">GMIT</a></li>
+                <li><a target="_blank" href="https://github.com/andkoc001">GitHub</a></li>
+                <li><a target="_blank" href="https://andkoc001.pythonanywhere.com">PythonAnywhere</a></li>
+            </ul>
+        </nav>
+    </header>
 
+    <main class="mainsection" <!-- Two columns layout -->
+        <section class="core">
             <div>
-                <table class="table table" id="equipment_list">
-                    <h2><span id="tableTitle">List of equipment</span></h2>
+                <table class="table" id="equipment_list">
+                    <h1>List of equipment</h1>
+                    <button type="button" onclick="showCreate()">Create a new entry</button>
                     <tr>
                         <th>id</th>
                         <th>Category</th>
                         <th>Name</th>
                         <th>Supplier</th>
-                        <th>Warranty</th>
                         <th>Cost in EUR</th>
                         <th>Cost in BitCoin</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>aaa</td>
+                        <td>bbb</td>
+                        <td>ccc</td>
+                        <td>234</td>
+                        <td>453</td>
+                        <td><button type="button" class="table_entry_update" onclick="showCreate()">Update</button></td>
+                        <td><button type="button" class="table_entry_delete" onclick="showCreate()">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>aaa</td>
+                        <td>bbb</td>
+                        <td>ccc</td>
+                        <td>234</td>
+                        <td>453</td>
+                        <td><button type="button" class="table_entry_update" onclick="showCreate()">Update</button></td>
+                        <td><button type="button" class="table_entry_delete" onclick="showCreate()">Delete</button></td>
                     </tr>
                 </table>
             </div>
 
-        </div>
-        </form>
-    </div>
-    </div>
+        </section>
 
-    <h1>Get bitcoin value from coindesk.com</h1>
-    <button onclick="readJSON()">Go </button>
-    <div id="output_BC"></div>
-
-    <h1>Get data from external server</h1>
-    <p>The books from andrewbeatty1.pythonanywhere.com/books</p>
-    <button onclick="getAll()">Get data</button>
-    </br>
-    <div id="output_books"></div>
+        <section class="core">
+            <h2>Get bitcoin value from coindesk.com</h2>
+            <span>
+                <button onclick="readJSON()">Go </button>
+                <div id="output_BC"></div>
+            </span>
+        </section>
+    </main>
 
     <script>
         function readJSON() {
@@ -92,27 +117,6 @@
                     //console.log("error: " + status + " msg:" + error);
                     var rate = result.bpi.EUR.rate
                     document.getElementById("output_BC").innerText = rate;
-                }
-            });
-        }
-
-
-        function getAll() {
-            document.getElementById("output_books").innerText = "Please wait...";
-            $.ajax({
-                "url": "http://andrewbeatty1.pythonanywhere.com/books",
-                "method": "GET",
-                "data": "",
-                "dataType": "JSON",
-                "success": function (result) {
-                    //console.log(result);
-                    document.getElementById("output_books").innerText = "";
-                    for (item of result) {
-                        document.getElementById("output_books").innerText += JSON.stringify(item) + "\n ";
-                    }
-                },
-                "error": function (xhr, status, error) {
-                    console.log("error: " + status + " msg:" + error);
                 }
             });
         }
