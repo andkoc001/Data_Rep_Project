@@ -42,16 +42,14 @@
         <nav id="topnav">
             <!-- The top bar menu consists of unordered list (ul) elements (list items, li), styled with the CSS -->
             <ul class="menu">
+                <li><a href="../templates/index.html">Start</a></li>
                 <li><a href="#">Equipment</a></li> <!-- This link is active, but does not require reloading the page -->
                 <li><a href="suppliers.html">Suppliers</a></li>
-                <li><a target="_blank" href="https://gmit.ie">GMIT</a></li>
-                <li><a target="_blank" href="https://github.com/andkoc001">GitHub</a></li>
-                <li><a target="_blank" href="https://andkoc001.pythonanywhere.com">PythonAnywhere</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="mainsection" <!-- Two columns layout -->
+    <main class="mainsection">
         <section class="core">
             <div>
                 <table class="table" id="equipment_list">
@@ -89,8 +87,11 @@
                     </tr>
                 </table>
             </div>
-
         </section>
+
+        </br>
+        </br>
+        </br>
 
         <section class="core">
             <h2>Get bitcoin value from coindesk.com</h2>
@@ -99,9 +100,38 @@
                 <div id="output_BC"></div>
             </span>
         </section>
+
     </main>
+    <!-- This button appears when the page is scrolled down bt 50px (see the Java Script file) and, when clicked, brings the web page back to the top -->
+    <button onclick="topFunction()" id="toTop" title="Top">Go to Top</button>
+
+
+    <footer>
+
+        <!-- This section holds links to the external websites -->
+        <div class="links">
+            <div class="gmit">
+                <a href="https://www.gmit.ie/" class="link" target="_blank"> GMIT </a>
+            </div>
+            <div class="gh">
+                <a href="https://github.com/andkoc001" class="link" target="_blank"> GitHub </a>
+            </div>
+            <div class="pa">
+                <a href="http://andkoc001.pythonanywhere.com/" class="link" target="_blank"> PythonAnywhere </a>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="info">
+            Andrzej Kocielski (G00376291@gmit.ie), 2020
+        </div>
+
+    </footer>
 
     <script>
+
+        // ////////////////////
+        // Get the current value of bitcoin, fetched from external server
         function readJSON() {
             $.ajax({
                 "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
@@ -121,6 +151,29 @@
             });
         }
 
+
+        // ////////////////////
+        // Scroll up to top of page functionality
+        // Adopted from: https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
+
+        // Get signal from the button
+        var mybutton = document.getElementById("toTop");
+
+        // The button appears when the user scrolls down 50px from the top of the document
+        window.onscroll = function () { scrollFunction() };
+        function scrollFunction() {
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
     </script>
 
 </body>

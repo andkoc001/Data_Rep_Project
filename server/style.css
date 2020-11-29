@@ -290,7 +290,7 @@ button:hover
 /* Defines style for the boxes in the footer linking to the GMIT website */
 .gmit
 {
-	width: 50%;
+	width: 33.33%;
 	padding: 10px 0;
 	float: left;
 }	
@@ -303,7 +303,7 @@ button:hover
 /* Defines style for the box linking to my GitHub website */
 .gh
 {
-	width: 50%;
+	width: 33.33%;
 	padding: 10px 0;
 	float: left;
 }	
@@ -311,6 +311,19 @@ button:hover
 .gh:hover
 {
 	background-color: #000;
+}	
+
+/* Defines style for the box linking to my PythonAnywhere website */
+.pa
+{
+	width: 33.33%;
+	padding: 10px 0;
+	float: left;
+}	
+
+.pa:hover
+{
+	background-color: #139fd7;
 }	
 
 a.link
