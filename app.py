@@ -58,7 +58,7 @@ cars = [
 @app.route('/')
 def home():
     # return "<h1>Welcome</h1>"
-    return render_template("index.html")
+    return render_template("index.html")  # located in /template folder
 
 
 @app.route('/cars', methods=['GET'])

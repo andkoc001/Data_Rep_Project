@@ -1,0 +1,124 @@
+<!-- Inspired by and based on http://elizabethdaly.eu.pythonanywhere.com/shopper5.html -->
+
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Data Rep Project - Autonomous Maintenance</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <h1>Machinery Autonomous Maintenance</h1>
+        <img src="https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy"
+            alt="Source: https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy"
+            style="width:300px" /></br>
+        Image source: <a class="caption" href="https://diginomica.com/fail-early-fail-often-manufacturing-mantra-ai-age"
+            target="_blank">diginomica.com</a>
+    </div>
+
+    <div class="topnav">
+        <a href="#">Equipment</a>
+        <a href="#">Suppliers</a>
+        <a href="#">GMIT</a>
+        <a href="#">GitHub</a>
+        <a href="#">PythonAnywhere</a>
+    </div>
+
+    <!-- Two columns layout -->
+    <div class="row">
+        <!-- Left column -->
+        <div class="column left">
+            <div class="header">Add new equipment</div>
+            <div style="text-align: center;">
+                <button id="showCreateButton" type="button" class="btn btn-primary btn-lg"
+                    onclick="showCreate()">Create</button>
+            </div>
+        </div>
+
+        <!-- Right column -->
+        <div class="column middle">
+
+            <div>
+                <table class="table table" id="equipment_list">
+                    <h2><span id="tableTitle">List of equipment</span></h2>
+                    <tr>
+                        <th>id</th>
+                        <th>Category</th>
+                        <th>Name</th>
+                        <th>Supplier</th>
+                        <th>Warranty</th>
+                        <th>Cost in EUR</th>
+                        <th>Cost in BitCoin</th>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <h1>Get bitcoin value from coindesk.com</h1>
+    <button onclick="readJSON()">Go </button>
+    <div id="output_BC"></div>
+
+    <h1>Get data from external server</h1>
+    <p>The books from andrewbeatty1.pythonanywhere.com/books</p>
+    <button onclick="getAll()">Get data</button>
+    </br>
+    <div id="output_books"></div>
+
+    <script>
+        function readJSON() {
+            $.ajax({
+                "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
+                "method": "GET",
+                "data": "",
+                "dataType": "JSON",
+                "success": function (result) {
+                    //console.log(result);
+                    var rate = result.bpi.EUR.rate
+                    document.getElementById("output_BC").innerText = rate;
+                },
+                "error": function (xhr, status, error) {
+                    //console.log("error: " + status + " msg:" + error);
+                    var rate = result.bpi.EUR.rate
+                    document.getElementById("output_BC").innerText = rate;
+                }
+            });
+        }
+
+
+        function getAll() {
+            document.getElementById("output_books").innerText = "Please wait...";
+            $.ajax({
+                "url": "http://andrewbeatty1.pythonanywhere.com/books",
+                "method": "GET",
+                "data": "",
+                "dataType": "JSON",
+                "success": function (result) {
+                    //console.log(result);
+                    document.getElementById("output_books").innerText = "";
+                    for (item of result) {
+                        document.getElementById("output_books").innerText += JSON.stringify(item) + "\n ";
+                    }
+                },
+                "error": function (xhr, status, error) {
+                    console.log("error: " + status + " msg:" + error);
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
