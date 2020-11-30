@@ -52,9 +52,12 @@
     <main class="mainsection">
         <section class="core">
             <div>
-                <table class="table" id="equipment_list">
-                    <h1>List of equipment</h1>
-                    <button type="button" onclick="showCreate()">Create a new entry</button>
+                <h1>List of equipment</h1>
+                <button id="show_table_button" style="margin: 0px 10px;" type="button" onclick="showTable()">Show
+                    table</button>
+                <button id="create_entry_button" style="margin: 0px 10px;" type="button" onclick="showCreate()">Create a
+                    new entry</button>
+                <table class="table" id="equipment_list" style="display:none">
                     <tr>
                         <th>id</th>
                         <th>Category</th>
@@ -72,8 +75,10 @@
                         <td>ccc</td>
                         <td>234</td>
                         <td>453</td>
-                        <td><button type="button" class="table_entry_update" onclick="showCreate()">Update</button></td>
-                        <td><button type="button" class="table_entry_delete" onclick="showCreate()">Delete</button></td>
+                        <td><button type="button" class="table_entry_update" onclick="showCreate()">Update</button>
+                        </td>
+                        <td><button type="button" class="table_entry_delete" onclick="showCreate()">Delete</button>
+                        </td>
                     </tr>
                     <tr>
                         <td>123</td>
@@ -82,16 +87,60 @@
                         <td>ccc</td>
                         <td>234</td>
                         <td>453</td>
-                        <td><button type="button" class="table_entry_update" onclick="showCreate()">Update</button></td>
-                        <td><button type="button" class="table_entry_delete" onclick="showCreate()">Delete</button></td>
+                        <td><button type="button" class="table_entry_update" onclick="showCreate()">Update</button>
+                        </td>
+                        <td><button type="button" class="table_entry_delete" onclick="showCreate()">Delete</button>
+                        </td>
                     </tr>
                 </table>
             </div>
         </section>
 
-        </br>
-        </br>
-        </br>
+        <!-- Form to create a new or update existing entry -->
+        <section>
+            <form>
+                <!-- Hide the form initially -->
+                <div class="core" id='create_and_update_form' style="display:none">
+                    <h2><span id="create_label"></span>Create</span><span id="update_label">Update</span> Entry</h2>
+                    <p>Enter the attributes of the item.</p>
+
+                    <!-- id field is hidden -->
+                    <div class="form-group">
+                        <input type="hidden" name="id" />
+                    </div>
+
+                    <!-- Category part of form -->
+                    <div class="form-group">
+                        <label for="formInputCategory" style="float: left;">Select the equipment category</label>
+                        <select type="text" class="form-control" id="formInputCategory" placeholder="Category">
+                            <option value="Tier 1">Tier 1</option>
+                            <option value="Tier 2">Tier 2</option>
+                            <option value="Auxiliary">Auxiliary</option>
+                            <option value="Spare">Spare</option>
+                        </select>
+                    </div>
+
+                    <!-- Name part of form -->
+                    <div class="form-group">
+                        <label for="formInputName" style="float: left;">Name of the equipment</label>
+                        <input type="text" class="form-control" id="formInputName" placeholder="Name">
+                    </div>
+
+                    <!-- Price part of form -->
+                    <div class="form-group">
+                        <label for="formInputPrice" style="float: left;">Price in euro</label>
+                        <input type="number" class="form-control" id="formInputPrice" placeholder="Price">
+                    </div>
+                    <!-- Create and update buttons -->
+                    <button type="button" class="do_create_button" id="do_create_button"
+                        onclick="doCreate()">Create</button>
+                    <button type="button" class="do_update_button" id="do_update_button"
+                        onclick="doUpdate()">Update</button>
+
+                </div>
+            </form>
+        </section>
+
 
         <section class="core">
             <h2>Get bitcoin value from coindesk.com</h2>
@@ -129,6 +178,51 @@
     </footer>
 
     <script>
+
+        // ////////////////////
+        // Table CRUD manipulation
+
+        function showTable() {
+            document.getElementById("equipment_list").style.display = "table"
+        }
+
+
+        function showCreate() {
+            // When creating a new entry:
+            document.getElementById('show_table_button').style.display = "none"
+            document.getElementById('create_entry_button').style.display = "none"
+            document.getElementById('equipment_list').style.display = "none"
+            document.getElementById('create_and_update_form').style.display = "block"
+
+            document.getElementById('create_label').style.display = "inline"
+            document.getElementById('update_label').style.display = "none"
+
+            document.getElementById('do_create_button').style.display = "block"
+            document.getElementById('do_update_button').style.display = "none"
+        }
+
+        function doCreate() {
+            console.log("inside doCreate in form")
+            var form = document.getElementById('create_update_form')
+            var new_equipment = {}
+
+            // id created by DB
+            food.Category = form.querySelector('select[placeholder="Category"]').value
+            //food.Category = form.querySelector('select[name="Category"]').value
+
+            food.Name = form.querySelector('input[placeholder="Name"]').value
+            //food.Name = form.querySelector('input[name="Name"]').value
+
+            food.Price = form.querySelector('input[placeholder="Price"]').value
+            //food.Price = form.querySelector('input[name="Price"]').value
+
+            console.log(JSON.stringify(food))
+
+            // ajax POST to server here.
+            createFoodAjax(food)
+        }
+
+
 
         // ////////////////////
         // Get the current value of bitcoin, fetched from external server

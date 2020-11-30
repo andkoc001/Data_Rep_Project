@@ -18,7 +18,7 @@ for_reference_only /* Non existing element, but left here because my IDE shows t
 	color: #eee; /* 1st text colour - main text */
 	color: #bbd; /* 2nd text colour, in-text links */
 	
-	color: #1df; /* 1st headline colour, section title */
+	color: #9df; /* 1st headline colour, section title */
 	
 	color: #f80; /* 1st highlight colour, logo text */
 	color: #fd7; /* 2nd highlight colour */
@@ -161,7 +161,7 @@ h2
 {
 	font-size: 20px;
 	font-weight: 400;
-	color: #1df;
+	color: #9df;
 }
 
 
@@ -182,7 +182,7 @@ h2
 	width: 950px;
 	padding-top: 10px;
 	padding-bottom: 20px;
-	margin-top: 20px;
+	margin-top: 10px;
 	display: table;
 	clear: both;
 }
