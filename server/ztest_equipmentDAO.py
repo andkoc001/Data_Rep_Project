@@ -12,12 +12,12 @@ print (result)
 #update; values are category= %s, name= %s, supplier= %s, cost_eur=%
 equipmentDAO.update(('Tier 2', 'Scanner', 'ccc', 555.12, latestid))
 result = equipmentDAO.findByID(latestid);
-print (result)
+#print (result)
 
 # get all 
 allEquipment = equipmentDAO.getAll()
-for equip in allEquipment:
-  print(equip)
+#for equip in allEquipment:
+  #print(equip)
 
 # delete
 equipmentDAO.delete(latestid)
