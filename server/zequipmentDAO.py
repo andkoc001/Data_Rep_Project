@@ -31,17 +31,12 @@ class EquipmentDAO:
         sql="SELECT * FROM equipment"
         cursor.execute(sql)
         results = cursor.fetchall()
-        # convert data type from tuple to dictionary
-        # results = cursor.fetchall()
-        # results = dict(cursor.fetchall())
-        # results = json.dumps(cursor.fetchall(), indent=4) # convert to json format
-        # convert data type from tuple to dictionary
+        cursor.close()
         returnArray = []
-        #print(results)
         for result in results:
             # print(result)
+            # convert data type from tuple to dictionary
             returnArray.append(self.convertToDictionary(result))
-        cursor.close()
         return returnArray
 
     def findByID(self, id):
@@ -50,10 +45,9 @@ class EquipmentDAO:
         values = (id,)
         cursor.execute(sql, values)
         result = cursor.fetchone()
-        # convert to dictionary
-        result = self.convertToDictionary(result)
         cursor.close()
-        return result
+        # convert result to dictionary and return
+        return self.convertToDictionary(result)
 
     def update(self, values):
         cursor = self.db.cursor()
@@ -71,16 +65,16 @@ class EquipmentDAO:
         cursor.close()
         print("Delete done")
 
-    # Converting tuple returned from DB into dict (adapted from http://elizabethdaly.eu.pythonanywhere.com/)
+    # Converting tuple returned from DB into dictionary
     def convertToDictionary(self, result):
         
         # List of attributes - match html with colnames
         colnames = ['id', 'Category', 'name', 'supplier', 'price_eur', 'price_bc']
         
-        # Empty list
+        # Empty dict
         item = {}
 
-        # Can't enumerate through an empty result, so check.
+        # if result exist, enumerate through
         if result:
             for i, colName in enumerate(colnames):
                 value = result[i]

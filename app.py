@@ -22,34 +22,17 @@ app = Flask(__name__, static_url_path='', static_folder='/')
 
 
 # ----------------
-# Data for testing
+# Initial data for testing
 # ----------------
 
 # local stored data
-cars = [
-    {
-        "reg": "181 G 1234",
-        "make": "Ford",
-        "model": "Modeo",
-        "price": 18000
-    },
-    {
-        "reg": "11 MO 1234",
-        "make": "Nissan",
-        "model": "Almera",
-        "price": 8000
-    },
-    {
-        "reg": "test",
-        "make": "Nissan",
-        "model": "Almera",
-        "price": 8000
-    }
-]
-
-# data stored on the external server
-# http://andrewbeatty1.pythonanywhere.com/books
-# books =
+""" foods=[
+    {"id": 1, "category": "Tier 1", "name":"CNC 2000", "supplier":"CNC machines Ltd", "price_eur":25762.50, "price_bc": null},
+    {"id": 2, "category": "Tier 1", "name":"Las-Weld-Super", "supplier":"Weld Masters", "price_eur":16543.00, "price_bc": null},
+    {"id": 3, "category": "Spare", "name":"Scanner RFID", "supplier":"Ocularify", "price_eur":499.99, "price_bc": null},
+    {"id": 4, "category": "Tier 2", "name":"Deburr Cleaner", "supplier":"Weld Masters", "price_eur":899.00, "price_bc": null},
+    {"id": 5, "category": "Tier 1", "name":"Conveyer 500x100", "supplier":"Line Optim", "price_eur":`12850.00, "price_bc": null},
+] """
 
 # -----------
 # Flask routs
@@ -61,71 +44,109 @@ def home():
     # return "<h1>Welcome</h1>"
     return render_template("index.html")  # located in /template folder
 
+#curl "http://127.0.0.1:5000/equipment"
 
-@app.route('/cars', methods=['GET'])
-def get_cars():
-    return jsonify({'cars': cars})
-# curl -i http://localhost:5000/cars
+# ---- get all ----
+#@app.route('/equipment', methods=['GET'])
+@app.route('/equipment')
+def getAll():
+    results = equipmentDAO.getAll() # check in not zequipmentDAO.getAll() <- with 'z' before equipment
+    return jsonify(results)
 
+# ---- get by id ----
+#@app.route('/equipment/<int:id>', methods=['GET'])
+@app.route('/equipment/<int:id>')
+def findById(id):
+    foundEquipment = equipmentDAO.findByID(id)
 
-@app.route('/cars/<string:reg>', methods=['GET'])
-def get_car(reg):
-    foundCars = list(filter(lambda t: t['reg'] == reg, cars))
-    if len(foundCars) == 0:
-        return jsonify({'car': ''}), 204
-    return jsonify({'car': foundCars[0]})
-# curl -i http://localhost:5000/cars/test
+    # Check if id exists
+    if not foundEquipment:
+        return "That id not found in the database"
+        abort(404)
 
+    # foundEquipment = list(filter(lambda t: t['id'] == id, equipment))
+    # if len(foundEquipment) == 0:
+    #     return jsonify({'equipment': ''}, indent=4), 204
+    #foundEquipment = equipmentDAO.findByID(id)
+    #return jsonify(foundEquipment)
+    return jsonify({'equipment': foundEquipment[0]})
 
-@app.route('/cars', methods=['POST'])
-def create_car():
+# ---- create ----
+@app.route('/equipment', methods=['POST'])
+def create():
+    # check if exist 
     if not request.json:
+        return "Wrong request"
         abort(400)
-    if not 'reg' in request.json:
+    if not 'id' in request.json:
+        return "Wrong request"
         abort(400)
-    car = {
-        "reg":  request.json['reg'],
-        "make": request.json['make'],
-        "model": request.json['model'],
-        "price": request.json['price']
-    }
-    cars.append(car)
-    return jsonify({'car': car}), 201
+    
+    equip = {
+        "category": request.json['category'],
+        "name": request.json['name'],
+        "supplier": request.json['supplier'],
+        "price_eur": request.json['price_eur']        
+    } 
+    values = (equip['category'], equip['name'], equip['supplier'], equip['price_eur'])
+    newId = equipmentDAO.create(values) # possibly with 'z' before equipment
+    equipment['id'] = newId
+    # return jsonify(equipment)
+    # equipment.append(equip)
+    return jsonify({'equipment': equip}), 201
 # sample test
 # curl -i -H "Content-Type:application/json" -X POST -d '{"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}' http://localhost:5000/cars
 # for windows use this one
 # curl -i -H "Content-Type:application/json" -X POST -d "{\"reg\":\"12 D 1234\",\"make\":\"Fiat\",\"model\":\"Punto\",\"price\":3000}" http://localhost:5000/cars
 
 
-@app.route('/cars/<string:reg>', methods=['PUT'])
-def update_car(reg):
-    foundCars = list(filter(lambda t: t['reg'] == reg, cars))
-    if len(foundCars) == 0:
+# ---- update ----
+@app.route('/equipment/<int:id>', methods=['PUT'])
+def update(id):
+    foundEquipment = equipmentDAO.findByID(id)
+    if not foundEquipment:
+        return "That id not found in the database"
         abort(404)
     if not request.json:
+        return "Wrong request"
         abort(400)
-    if 'make' in request.json and type(request.json['make']) != str:
+    # checks for data integrity
+    if 'category' in request.json and type(request.json['category']) != str:
         abort(400)
-    if 'model' in request.json and type(request.json['model']) is not str:
+        return "Wrong request"
+    if 'name' in request.json and type(request.json['name']) != str:
         abort(400)
-    if 'price' in request.json and type(request.json['price']) is not int:
+        return "Wrong request"
+    if 'supplier' in request.json and type(request.json['supplier']) is not str:
         abort(400)
-    foundCars[0]['make'] = request.json.get('make', foundCars[0]['make'])
-    foundCars[0]['model'] = request.json.get('model', foundCars[0]['model'])
-    foundCars[0]['price'] = request.json.get('price', foundCars[0]['price'])
-    return jsonify({'car': foundCars[0]})
+        return "Wrong request"
+    if 'price_eur' in request.json and type(request.json['price_eur']) is not float:
+        abort(400)
+        return "Wrong request"
+
+    if 'category' in request.json:
+        foundEquipment[0]['category'] = request.json.get('category', foundEquipment[0]['category'])
+    if 'name' in request.json:
+        foundEquipment[0]['name'] = request.json.get('name', foundEquipment[0]['name'])
+    if 'supplier' in request.json:
+        foundEquipment[0]['supplier'] = request.json.get('supplier', foundEquipment[0]['supplier'])
+    if 'price_eur' in request.json:
+        foundEquipment[0]['price_eur'] = request.json.get('price_eur', foundEquipment[0]['price_eur'])
+
+    return jsonify({'equipment': foundEquipment[0]})
 # curl -i -H "Content-Type:application/json" -X PUT -d '{"make":"Fiesta"}' http://localhost:5000/cars/181%20G%201234
 # for windows use this one
 # curl -i -H "Content-Type:application/json" -X PUT -d "{\"make\":\"Fiesta\"}" http://localhost:5000/cars/181%20G%201234
 
 
-@app.route('/cars/<string:reg>', methods=['DELETE'])
-def delete_car(reg):
-    foundCars = list(filter(lambda t: t['reg'] == reg, cars))
-    if len(foundCars) == 0:
+@app.route('/equipment/<int:id>', methods=['DELETE'])
+def delete_car(id):
+    foundEquipment = equipmentDAO.findByID(id)
+    if not foundEquipment:
+        return "That id does not exist in the database"
         abort(404)
-    cars.remove(foundCars[0])
-    return jsonify({'result': True})
+    equipmentDAO.delete(id)
+    return jsonify({"done":True})
 
 
 # --------------------------------
