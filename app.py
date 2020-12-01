@@ -15,6 +15,7 @@
 
 # import git
 from flask import Flask, jsonify, request, abort, make_response, render_template
+from server.zequipmentDAO import equipmentDAO
 import json
 
 app = Flask(__name__, static_url_path='', static_folder='/')

@@ -1,16 +1,20 @@
 import mysql.connector
+import dbconfig as cfg
 
 class EquipmentDAO:
     db=""
-    def __init__(self): 
+
+
+    #def connectToDB(self): # in case the line below does not work
+    def __init__(self):
         self.db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        #user="datarep",  # this is the user name on my mac
-        #passwd="password" # for my mac
-        database="datarepresentation"
+        host = cfg.mysql['host'],
+        user = cfg.mysql['user'],
+        password = cfg.mysql['password'],
+        database = cfg.mysql['database']
         )
+
+
     def create(self, values):
         cursor = self.db.cursor()
         sql="INSERT INTO equipment (category, name, supplier, price_eur) values (%s,%s,%s,%s)"
@@ -29,7 +33,7 @@ class EquipmentDAO:
         print(results)
         for result in results:
             print(result)
-            returnArray.append(self.convertToDictionary(result))
+            #returnArray.append(self.convertToDictionary(result))
         cursor.close()
         return returnArray
 
@@ -40,13 +44,13 @@ class EquipmentDAO:
         cursor.execute(sql, values)
         result = cursor.fetchone()
         # convert to dictionary
-        result = self.convertToDictionary(result)
+        #result = self.convertToDictionary(result)
         cursor.close()
         return result
 
     def update(self, values):
         cursor = self.db.cursor()
-        sql="UPDATE equipment SET category= %s, name= %s, supplier= %s, cost_eur=%s  where id = %s"
+        sql="UPDATE equipment SET category= %s, name= %s, supplier= %s, price_eur= %s  WHERE id = %s"
         cursor.execute(sql, values)
         cursor.close()
         self.db.commit()

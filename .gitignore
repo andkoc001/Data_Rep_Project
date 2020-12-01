@@ -129,4 +129,7 @@ dmypy.json
 .pyre/
 
 # Manually added by myself
-Screenshots/
+# Screenshots of the lecture videos
+Screenshots/ 
+# Database access credentials
+*config.py
