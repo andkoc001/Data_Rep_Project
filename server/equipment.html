@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <!-- Data Representation Project, GMIT 2020 -->
 <!-- Author: Andrzej Kocielski, G00376291@gmit.ie -->
 <!-- Lecturer: dr Andrew Beatty -->
 
 <!-- Inspired by http://elizabethdaly.eu.pythonanywhere.com/shopper5.html -->
 
-<!DOCTYPE html>
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -20,7 +20,7 @@
     <!-- Reference to external style file (overrides the bootstrap style, because it is placed below in this file -->
     <link rel="stylesheet" href="style.css" type="text/css" />
     <!-- AJAX reference -->
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.js"></script>
     <!-- https://www.faviconcodegenerator.com/prevent-favicon-404-error.php -->
     <!-- <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo="> -->
 </head>
@@ -175,7 +175,7 @@
 
     function showViewAll() {
         document.getElementById('showCreateButton').style.display = "block"
-        document.getElementById('equipmentTable').style.display = "block"
+        document.getElementById('equipmentTable').style.display = "table"
         document.getElementById('createUpdateForm').style.display = "none"
     }
 
@@ -199,18 +199,24 @@
     function doCreate() {
         var form = document.getElementById('createUpdateForm')
         var equipment = {}
+        console.log("inside doCreate function:")
+        console.log(JSON.stringify(equipment)) // for testing
         equipment.category = form.querySelector('select[placeholder="Category"]').value
         equipment.name = form.querySelector('input[placeholder="Name"]').value
         equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
         equipment.price_eur = form.querySelector('input[placeholder="Price EUR"]').value
         console.log(JSON.stringify(equipment)) // for testing
         createEquipmentAjax(equipment)
+        showViewAll()
     }
 
 
     function doUpdate() {
+        console.log("inside doUpdate function");
         var equipment = getEquipmentFromForm();
         var rowElement = document.getElementById(equipment.id);
+        console.log("inside doUpdate function - will do updateEquipmentAjax in the next line");
+        console.log(JSON.stringify(equipment));
         updateEquipmentAjax(equipment);
         setEquipmentInRow(rowElement, equipment);
         clearForm();
@@ -248,7 +254,7 @@
         var cell6 = rowElement.insertCell(5);
         cell6.innerHTML = '<button class="table_entry_update" onclick="showUpdate(this)">Update</button>'
         var cell7 = rowElement.insertCell(6);
-        cell7.innerHTML = '<button class="table_entry_delete" onclick="doDelete(this)"">Delete</button>'
+        cell7.innerHTML = '<button class="table_entry_delete" onclick="doDelete(this)">Delete</button>'
     }
 
 
@@ -267,7 +273,8 @@
         equipment.category = rowElement.cells[1].firstChild.textContent
         equipment.name = rowElement.cells[2].firstChild.textContent
         equipment.supplier = rowElement.cells[3].firstChild.textContent
-        equipment.price_eur = parseFloat(rowElement.cells[4].firstChild.textContent, 10)
+        equipment.price_eur = parseFloat(rowElement.cells[4].firstChild.textContent, 2)
+        console.log(equipment)
         return equipment
     }
 
@@ -298,11 +305,13 @@
         var form = document.getElementById('createUpdateForm')
         var equipment = {}
         equipment.id = form.querySelector('input[name="id"]').value
-        equipment.category = form.querySelector('input[placeholder="Category"]').value
+        equipment.category = form.querySelector('select[placeholder="Category"]').value
         equipment.name = form.querySelector('input[placeholder="Name"]').value
         equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
-        equipment.price_eur = parseFloat(form.querySelector('input[placeholder="Price EUR"]').value, 10)
+        equipment.price_eur = parseFloat(form.querySelector('input[placeholder="Price EUR"]').value).toFixed(2)
+        console.log("inside getEquipmentFromForm, next line prints equipment")
         console.log(JSON.stringify(equipment))
+        console.log("still inside getEquipmentFromForm")
         return equipment
     }
 
@@ -328,8 +337,8 @@
 
 
     function createEquipmentAjax(equipment) {
-        //var car = {"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}
-        console.log(JSON.stringify(equipment));
+        console.log("inside createEquipmentAjax function:")
+        console.log(JSON.stringify(equipment)); // for testing
         $.ajax({
             "url": "http://127.0.0.1:5000/equipment",
             "method": "POST",
@@ -337,7 +346,7 @@
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
             "success": function (result) {
-                //console.log(result);
+                console.log(result);
                 equipment.id = result.id
                 addEquipmentToTable(equipment)
                 clearForm()
@@ -351,20 +360,20 @@
 
 
     function updateEquipmentAjax(equipment) {
-        //var car = {"reg":"12 D 1234","price":8000}
+        console.log("inside updateEqimpmentAjax function");
         console.log(JSON.stringify(equipment));
         $.ajax({
             "url": "http://127.0.0.1:5000/equipment/" + encodeURI(equipment.id),
             "method": "PUT",
             "data": JSON.stringify(equipment),
+            //"data": buildQuery(equipment),
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
             "success": function (result) {
-                // console.log(result);
-
+                console.log(result);
             },
             "error": function (xhr, status, error) {
-                console.log("error: " + status + " msg:" + error);
+                console.log("error: " + status + " msg: " + error);
             }
         });
     }
@@ -408,6 +417,25 @@
                 document.getElementById("outputBitcoin").innerText = rate;
             }
         });
+    }
+
+    // from https://stackoverflow.com/a/16017283
+    function buildQuery(obj) {
+        var Result = '';
+        if (typeof (obj) == 'object') {
+            jQuery.each(obj, function (key, value) {
+                Result += (Result) ? '&' : '';
+                if (typeof (value) == 'object' && value.length) {
+                    for (var i = 0; i < value.length; i++) {
+                        Result += [key + '[]', encodeURIComponent(value[i])].join('=');
+                    }
+                } else {
+                    Result += [key, encodeURIComponent(value)].join('=');
+                }
+            });
+        }
+        console.log("indie buildQuery")
+        return Result;
     }
 
     // ////////////////////
