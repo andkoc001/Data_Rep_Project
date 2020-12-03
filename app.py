@@ -18,7 +18,7 @@ from flask import Flask, jsonify, request, abort, make_response, render_template
 from server.zequipmentDAO import equipmentDAO
 import json
 
-app = Flask(__name__, static_url_path='', static_folder='/')
+app = Flask(__name__, static_url_path='', static_folder='.')
 
 
 # ----------------
@@ -26,7 +26,7 @@ app = Flask(__name__, static_url_path='', static_folder='/')
 # ----------------
 
 # local stored data
-""" foods=[
+""" equipment=[
     {"id": 1, "category": "Tier 1", "name":"CNC 2000", "supplier":"CNC machines Ltd", "price_eur":25762.50, "price_bc": null},
     {"id": 2, "category": "Tier 1", "name":"Las-Weld-Super", "supplier":"Weld Masters", "price_eur":16543.00, "price_bc": null},
     {"id": 3, "category": "Spare", "name":"Scanner RFID", "supplier":"Ocularify", "price_eur":499.99, "price_bc": null},
@@ -68,8 +68,8 @@ def findById(id):
     # if len(foundEquipment) == 0:
     #     return jsonify({'equipment': ''}, indent=4), 204
     #foundEquipment = equipmentDAO.findByID(id)
-    #return jsonify(foundEquipment)
-    return jsonify({'equipment': foundEquipment[0]})
+    return jsonify(foundEquipment)
+    #return jsonify({'equipment': foundEquipment[0]})
 
 # ---- create ----
 @app.route('/equipment', methods=['POST'])

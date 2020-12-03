@@ -1,5 +1,5 @@
 import mysql.connector
-import dbconfig as cfg
+import server.dbconfig as cfg
 import json
 from flask import jsonify
 

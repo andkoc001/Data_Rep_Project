@@ -1,0 +1,238 @@
+<!-- Data Representation Project, GMIT 2020 -->
+<!-- Author: Andrzej Kocielski, G00376291@gmit.ie -->
+<!-- Lecturer: dr Andrew Beatty -->
+
+<!-- Inspired by http://elizabethdaly.eu.pythonanywhere.com/shopper5.html -->
+
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Data Rep Project - Autonomous Maintenance</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Representation Project, GMIT 2020">
+    <meta name="author" content="Andrzej Kocielski, G00376291@gmit.ie">
+
+    <!-- Bootstrap style file -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Reference to external style file (overrides the bootstrap style, because it is placed below in this file -->
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <!-- AJAX reference -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <h1 class="logo_title">Equipment Autonomous Maintenance</h1>
+            <div class="picture">
+                <img src="https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy"
+                    alt="Source: https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy" /></br>
+                <div class="caption"> Image source: <a
+                        href="https://diginomica.com/fail-early-fail-often-manufacturing-mantra-ai-age"
+                        target="_blank">diginomica.com</a></div>
+            </div>
+        </div>
+
+        <!-- Top navigation bar -->
+        <nav id="topnav">
+            <!-- The top bar menu consists of unordered list (ul) elements (list items, li), styled with the CSS -->
+            <ul class="menu">
+                <li><a href="../templates/index.html">Start</a></li>
+                <li><a href="#">Equipment</a></li> <!-- This link is active, but does not require reloading the page -->
+                <li><a href="#">Suppliers</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="mainsection">
+        <section class="core">
+            <div>
+                <h1>List of equipment</h1>
+                <button id="show_table_button" style="margin: 0px 10px;" type="button" onclick="showTable()">Show
+                    table</button>
+                <button id="create_entry_button" style="margin: 0px 10px;" type="button" onclick="showCreate()">Create a
+                    new entry</button>
+                <table class="table" id="equipment_list" style="display:none">
+                    <tr>
+                        <th>id</th>
+                        <th>Category</th>
+                        <th>Name</th>
+                        <th>Supplier</th>
+                        <th>Cost in EUR</th>
+                        <th>Cost in BitCoin</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- Form to create a new or update existing entry -->
+        <section>
+            <form>
+                <!-- Hide the form initially -->
+                <div class="core" id='createUpdateForm' style="display:none">
+                    <h2><span id="createLabel"></span>Create a new</span><span id="updateLabel">Update existing</span>
+                        Entry</h2>
+
+                    <!-- hide id field -->
+                    <input type="hidden" name="id" />
+
+                    <!-- Category part of form -->
+                    Select the equipment category
+                    <select type="text" class="form-control" id="formInputCategory" placeholder="Category">
+                        <option value="Tier 1">Tier 1</option>
+                        <option value="Tier 2">Tier 2</option>
+                        <option value="Auxiliary">Auxiliary</option>
+                        <option value="Spare">Spare</option>
+                    </select>
+
+                    <!-- Name part of form -->
+                    Name of the equipment
+                    <input type="text" class="form-control" id="formInputName" placeholder="Name">
+
+                    <!-- Price part of form -->
+                    Price in euro
+                    <input type="number" class="form-control" id="formInputPrice" placeholder="Price">
+
+                    <!-- Create and update buttons -->
+                    <button type="button" class="doCreateButton" id="doCreateButton"
+                        onclick="doCreate()">Create</button>
+                    <button type="button" class="doUpdateButton" id="doUpdateButton"
+                        onclick="doUpdate()">Update</button>
+                </div>
+            </form>
+        </section>
+
+
+        <section class="core">
+            <h2>Get bitcoin value from coindesk.com</h2>
+            <span>
+                <button onclick="readJSON()">Go </button>
+                <div id="output_BC"></div>
+            </span>
+        </section>
+
+    </main>
+    <!-- This button appears when the page is scrolled down bt 50px (see the Java Script file) and, when clicked, brings the web page back to the top -->
+    <button onclick="topFunction()" id="toTop" title="Top">Go to Top</button>
+
+
+    <footer>
+
+        <!-- This section holds links to the external websites -->
+        <div class="links">
+            <div class="gmit">
+                <a href="https://www.gmit.ie/" class="link" target="_blank"> GMIT </a>
+            </div>
+            <div class="gh">
+                <a href="https://github.com/andkoc001" class="link" target="_blank"> GitHub </a>
+            </div>
+            <div class="pa">
+                <a href="http://andkoc001.pythonanywhere.com/" class="link" target="_blank"> PythonAnywhere </a>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="info">
+            Andrzej Kocielski (G00376291@gmit.ie), 2020
+        </div>
+
+    </footer>
+
+    <script>
+
+        // ////////////////////
+        // Table CRUD manipulation
+
+        function showTable() {
+            document.getElementById("equipment_list").style.display = "table"
+        }
+
+
+        function showCreate() {
+            // When creating a new entry:
+            document.getElementById('show_table_button').style.display = "none"
+            document.getElementById('create_entry_button').style.display = "none"
+            document.getElementById('equipment_list').style.display = "none"
+            document.getElementById('createUpdateForm').style.display = "block"
+
+            document.getElementById('createLabel').style.display = "inline"
+            document.getElementById('updateLabel').style.display = "none"
+
+            document.getElementById('doCreateButton').style.display = "block"
+            document.getElementById('doUpdateButton').style.display = "none"
+        }
+
+        function doCreate() {
+            console.log("inside doCreate in form")
+            var form = document.getElementById('createUpdateForm')
+            var new_equipment = {}
+
+            // id created by DB
+            new_equipment.category = form.querySelector('select[placeholder="category"]').value
+            new_equipment.name = form.querySelector('input[placeholder="name"]').value
+            new_equipment.supplier = form.querySelector('input[placeholder="supplier"]').value
+            new_equipment.price_eur = form.querySelector('input[placeholder="price_eur"]').value
+
+            console.log(JSON.stringify(new_equipment)
+            // ajax POST to server.
+            createEquipmentAjax(new_equipment)
+        }
+
+
+
+        // ////////////////////
+        // Get the current value of bitcoin, fetched from external server
+        function readJSON() {
+            $.ajax({
+                "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
+                "method": "GET",
+                "data": "",
+                "dataType": "JSON",
+                "success": function (result) {
+                    //console.log(result);
+                    var rate = result.bpi.EUR.rate
+                    document.getElementById("output_BC").innerText = rate;
+                },
+                "error": function (xhr, status, error) {
+                    //console.log("error: " + status + " msg:" + error);
+                    var rate = result.bpi.EUR.rate
+                    document.getElementById("output_BC").innerText = rate;
+                }
+            });
+        }
+
+
+        // ////////////////////
+        // Scroll up to top of page functionality
+        // Adopted from: https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
+
+        // Get signal from the button
+        var mybutton = document.getElementById("toTop");
+
+        // The button appears when the user scrolls down 50px from the top of the document
+        window.onscroll = function () { scrollFunction() };
+        function scrollFunction() {
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
+</body>
+
+</html>
