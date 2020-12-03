@@ -249,6 +249,21 @@ button:hover
 	opacity: 0.8;
 }
 
+::placeholder {
+  color: lightblue;
+  opacity: 1; /* Firefox */
+}
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: lightblue;
+            opacity: 1; /* Firefox */
+}
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: lightblue;
+}
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+						color: lightblue;
+}
+
 /* ### ### ### */
 
 /* Go to top button; adopted from: https://www.w3schools.com/howto/howto_js_scroll_to_top.asp */

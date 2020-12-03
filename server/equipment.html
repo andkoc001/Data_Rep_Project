@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="style.css" type="text/css" />
     <!-- AJAX reference -->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-
+    <!-- https://www.faviconcodegenerator.com/prevent-favicon-404-error.php -->
+    <!-- <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo="> -->
 </head>
 
 <body>
@@ -58,7 +59,7 @@
                     new entry</button>
             </div>
             <div>
-                <table class="table" style="color: #ddd;" id="equipmentTable">
+                <table class="table" id="equipmentTable" style="color: #ddd; display: none;">
                     <tr style="color: aquamarine;">
                         <th>id</th>
                         <th>Category</th>
@@ -79,14 +80,14 @@
             <form>
                 <!-- Hide the form initially -->
                 <div class="core" id='createUpdateForm' style="display:none">
-                    <h2><span id="createLabel"></span>Create a new</span><span id="updateLabel">Update existing</span>
-                        Entry</h2>
+                    <h2><span id="createLabel">Create a new</span><span id="updateLabel">Update existing</span>
+                        Item</h2>
 
                     <!-- hide id field -->
                     <input type="hidden" name="id" />
 
                     <!-- Category part of form -->
-                    Select the equipment category
+                    <span style="float: left;">Select category of the equipment</span>
                     <select type="text" class="form-control" id="formInputCategory" placeholder="Category">
                         <option value="Tier 1">Tier 1</option>
                         <option value="Tier 2">Tier 2</option>
@@ -95,12 +96,14 @@
                     </select>
 
                     <!-- Name part of form -->
-                    Name of the equipment
+                    <span style="float: left; margin-top: 6px;">Name of the equipment</span>
                     <input type="text" class="form-control" id="formInputName" placeholder="Name">
-
+                    <!-- Name part of form -->
+                    <span style="float: left; margin-top: 6px;">Name of the Supplier</span>
+                    <input type="text" class="form-control" id="formInputName" placeholder="Supplier">
                     <!-- Price part of form -->
-                    Price in euro
-                    <input type="number" class="form-control" id="formInputPrice" placeholder="Price">
+                    <span style="float: left; margin-top: 6px;">Price in euro</span>
+                    <input type="number" class="form-control" id="formInputPrice" placeholder="Price EUR">
 
                     <!-- Create and update buttons -->
                     <button type="button" id="doCreateButton" onclick="doCreate()">Create</button>
@@ -147,14 +150,23 @@
     // ////////////////////
     // Table CRUD manipulation
 
+    function showTable() {
+        document.getElementById('showCreateButton').style.display = "inline"
+        document.getElementById('equipmentTable').style.display = "table"
+        document.getElementById('createUpdateForm').style.display = "none"
+        document.getElementById('createLabel').style.display = "inline"
+        document.getElementById('updateLabel').style.display = "none"
+        document.getElementById('doCreateButton').style.display = "none"
+        document.getElementById('doUpdateButton').style.display = "none"
+
+    }
+
     function showCreate() {
         document.getElementById('showCreateButton').style.display = "none"
         document.getElementById('equipmentTable').style.display = "none"
         document.getElementById('createUpdateForm').style.display = "block"
-
         document.getElementById('createLabel').style.display = "inline"
         document.getElementById('updateLabel').style.display = "none"
-
         document.getElementById('doCreateButton').style.display = "block"
         document.getElementById('doUpdateButton').style.display = "none"
 
@@ -172,17 +184,13 @@
         document.getElementById('showCreateButton').style.display = "none"
         document.getElementById('equipmentTable').style.display = "none"
         document.getElementById('createUpdateForm').style.display = "block"
-
         document.getElementById('createLabel').style.display = "none"
         document.getElementById('updateLabel').style.display = "inline"
-
         document.getElementById('doCreateButton').style.display = "none"
         document.getElementById('doUpdateButton').style.display = "block"
 
-
         var rowElement = buttonElement.parentNode.parentNode
         // these is a way of finding the closest <tr> which would safer, closest()
-
         var equipment = getEquipmentFromRow(rowElement)
         populateFormWithEquipment(equipment)
     }
@@ -190,13 +198,12 @@
 
     function doCreate() {
         var form = document.getElementById('createUpdateForm')
-
         var equipment = {}
-
-        equipment.Title = form.querySelector('input[name="Title"]').value
-        equipment.Author = form.querySelector('input[name="Author"]').value
-        equipment.Price = form.querySelector('input[name="Price"]').value
-        console.log(JSON.stringify(equipment))
+        equipment.category = form.querySelector('select[placeholder="Category"]').value
+        equipment.name = form.querySelector('input[placeholder="Name"]').value
+        equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
+        equipment.price_eur = form.querySelector('input[placeholder="Price EUR"]').value
+        console.log(JSON.stringify(equipment)) // for testing
         createEquipmentAjax(equipment)
     }
 
@@ -206,7 +213,6 @@
         var rowElement = document.getElementById(equipment.id);
         updateEquipmentAjax(equipment);
         setEquipmentInRow(rowElement, equipment);
-
         clearForm();
         showViewAll();
     }
@@ -234,7 +240,7 @@
         var cell4 = rowElement.insertCell(3);
         cell4.innerHTML = equipment.supplier
         var cell5 = rowElement.insertCell(4);
-        cell5.innerHTML = equipment.proce_eur
+        cell5.innerHTML = parseFloat(equipment.price_eur).toFixed(2)
         /*
         var cell6 = rowElement.insertCell(5); //
         cell6.innerHTML = '<button class="checkBitcoin" onclick="checkBitcoin(this)">Check</button>'
@@ -243,42 +249,47 @@
         cell6.innerHTML = '<button class="table_entry_update" onclick="showUpdate(this)">Update</button>'
         var cell7 = rowElement.insertCell(6);
         cell7.innerHTML = '<button class="table_entry_delete" onclick="doDelete(this)"">Delete</button>'
-
     }
+
 
     function clearForm() {
         var form = document.getElementById('createUpdateForm')
-
-        form.querySelector('input[name="Title"]').value = ''
-        form.querySelector('input[name="Author"]').value = ''
-        form.querySelector('input[name="Price"]').value = ''
+        form.querySelector('select[placeholder="Category"]').value = ''
+        form.querySelector('input[placeholder="Name"]').value = ''
+        form.querySelector('input[placeholder="Supplier"]').value = ''
+        form.querySelector('input[placeholder="Price EUR"]').value = ''
     }
+
+
     function getEquipmentFromRow(rowElement) {
-        var car = {}
+        var equipment = {}
         equipment.id = rowElement.getAttribute('id')
-        equipment.Title = rowElement.cells[1].firstChild.textContent
-        equipment.Author = rowElement.cells[2].firstChild.textContent
-        equipment.Price = parseInt(rowElement.cells[3].firstChild.textContent, 10)
+        equipment.category = rowElement.cells[1].firstChild.textContent
+        equipment.name = rowElement.cells[2].firstChild.textContent
+        equipment.supplier = rowElement.cells[3].firstChild.textContent
+        equipment.price_eur = parseFloat(rowElement.cells[4].firstChild.textContent, 10)
         return equipment
     }
 
 
     function setEquipmentInRow(rowElement, equipment) {
         rowElement.cells[0].firstChild.textContent = equipment.id
-        rowElement.cells[1].firstChild.textContent = equipment.Title
-        rowElement.cells[2].firstChild.textContent = equipment.Author
-        rowElement.cells[3].firstChild.textContent = equipment.Price
+        rowElement.cells[1].firstChild.textContent = equipment.category
+        rowElement.cells[2].firstChild.textContent = equipment.name
+        rowElement.cells[3].firstChild.textContent = equipment.supplier
+        rowElement.cells[4].firstChild.textContent = parseFloat(equipment.price_eur).toFixed(2)
     }
 
 
     function populateFormWithEquipment(equipment) {
         var form = document.getElementById('createUpdateForm')
+        console.log(form)
         form.querySelector('input[name="id"]').disabled = true
-
         form.querySelector('input[name="id"]').value = equipment.id
-        form.querySelector('input[name="Title"]').value = equipment.Title
-        form.querySelector('input[name="Author"]').value = equipment.Author
-        form.querySelector('input[name="Price"]').value = equipment.Price
+        form.querySelector('select[placeholder="Category"]').value = equipment.category
+        form.querySelector('input[placeholder="Name"]').value = equipment.name
+        form.querySelector('input[placeholder="Supplier"]').value = equipment.supplier
+        form.querySelector('input[placeholder="Price EUR"]').value = equipment.price_eur
         return equipment
     }
 
@@ -287,9 +298,10 @@
         var form = document.getElementById('createUpdateForm')
         var equipment = {}
         equipment.id = form.querySelector('input[name="id"]').value
-        equipment.Title = form.querySelector('input[name="Title"]').value
-        equipment.Author = form.querySelector('input[name="Author"]').value
-        equipment.Price = parseInt(form.querySelector('input[name="Price"]').value, 10)
+        equipment.category = form.querySelector('input[placeholder="Category"]').value
+        equipment.name = form.querySelector('input[placeholder="Name"]').value
+        equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
+        equipment.price_eur = parseFloat(form.querySelector('input[placeholder="Price EUR"]').value, 10)
         console.log(JSON.stringify(equipment))
         return equipment
     }
