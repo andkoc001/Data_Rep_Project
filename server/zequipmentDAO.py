@@ -5,18 +5,24 @@ from flask import jsonify
 
 # create a class
 class EquipmentDAO:
+    
     db=""
 
-
-    #def connectToDB(self): # in case the line below does not work
-    def __init__(self):
+    def connectToDB(self): # in case the line below does not work
         self.db = mysql.connector.connect(
-        host = cfg.mysql['host'],
-        user = cfg.mysql['user'],
-        password = cfg.mysql['password'],
-        database = cfg.mysql['database']
+            host = cfg.mysql['host'],
+            user = cfg.mysql['user'],
+            password = cfg.mysql['password'],
+            database = cfg.mysql['database']
         )
 
+    def __init__(self):
+        self.connectToDB()
+
+    def getCursor(self):
+        if not self.db.is_connected():
+            self.connectToDB()
+        return self.db.cursor()
 
     def create(self, values):
         cursor = self.db.cursor()
@@ -66,20 +72,16 @@ class EquipmentDAO:
         print("Delete done")
 
     # Converting tuple returned from DB into dictionary
-    def convertToDictionary(self, result):
-        
+    def convertToDictionary(self, result):        
         # List of attributes - match html with colnames
-        colnames = ['id', 'category', 'name', 'supplier', 'price_eur']
-        
+        colnames = ['id', 'category', 'name', 'supplier', 'price_eur']        
         # Empty dict
         item = {}
-
         # if result exist, enumerate through
         if result:
             for i, colName in enumerate(colnames):
                 value = result[i]
                 item[colName] = value
-
         return item
 
 

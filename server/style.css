@@ -43,7 +43,7 @@ body
 	color: #eee;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
-	min-width: 650px;
+	min-width: 600px;
 }
 
 header
@@ -58,7 +58,7 @@ header
 h1.logo_title
 {
 	color: #f80;
-	font-size: 34px;
+	font-size: 38px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 5px;
@@ -151,11 +151,11 @@ h1.logo_title
 
 h1
 {
-	font-size: 32px;
+	font-size: 28px;
 	font-weight: 400;
 	color: #fd7;
-	margin-top: 12px;
-	margin-bottom: 8px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	text-align: center;
 }
 
@@ -170,7 +170,6 @@ h2
 /* This class container holds the main section of the main webpage - only one per page*/
 .mainsection
 {
-	background-color: #234;
 	color: #eee;
 }
 
@@ -178,13 +177,14 @@ h2
 /* Collection of the main website content elements */
 .core
 {
+	background-color: #234;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
-	min-width: 650px;
-	max-width: 950px;
-	margin-top: 4px;
-	margin-bottom: 10px;
+	width: 950px;
+	/*max-width: 950px;*/
+	margin-top: 15px;
+	margin-bottom: 15px;
 	display: table;
 	clear: both;
 }
@@ -278,7 +278,7 @@ button:hover
 	z-index: 99;
 	border: none;
 	outline: none;
-	color: #f80;
+	color: #fd7;
 	background-color: #124;
 	cursor: pointer;
 	padding: 15px;
@@ -289,7 +289,7 @@ button:hover
 
 #toTop:hover
 {
-	color: #fd7;
+	color: #ffd;
 }
 
 
@@ -298,8 +298,7 @@ button:hover
 /* Links to other, external websites */
 .links
 {
-	min-width: 650px;
-	max-width: 750px;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
@@ -312,7 +311,7 @@ button:hover
 /* Defines style for the boxes in the footer linking to the GMIT website */
 .gmit
 {
-	width: 33.33%;
+	width: 200px;
 	padding: 10px 0;
 	float: left;
 }	
@@ -325,7 +324,7 @@ button:hover
 /* Defines style for the box linking to my GitHub website */
 .gh
 {
-	width: 33.33%;
+	width: 200px;
 	padding: 10px 0;
 	float: left;
 }	
@@ -338,7 +337,7 @@ button:hover
 /* Defines style for the box linking to my PythonAnywhere website */
 .pa
 {
-	width: 33.33%;
+	width: 200px;
 	padding: 10px 0;
 	float: left;
 }	
