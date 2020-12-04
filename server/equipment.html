@@ -62,10 +62,10 @@
                 <table class="table" id="equipmentTable" style="color: #ddd; display: none;">
                     <tr style="color: aquamarine;">
                         <th>id</th>
-                        <th>Category</th>
-                        <th>Name</th>
-                        <th>Supplier</th>
-                        <th>Cost in EUR</th>
+                        <th>category</th>
+                        <th>name</th>
+                        <th>supplier</th>
+                        <th>price_eur</th>
                         <!--
                         <th>Cost in BitCoin</th>
                         -->
@@ -304,11 +304,21 @@
     function getEquipmentFromForm() {
         var form = document.getElementById('createUpdateForm')
         var equipment = {}
+        console.log("AAAAAA, id:")
         equipment.id = form.querySelector('input[name="id"]').value
+        console.log(equipment.id)
+        console.log("AAAAAA, category:")
         equipment.category = form.querySelector('select[placeholder="Category"]').value
+        console.log(equipment.category)
+        console.log("AAAAAA, name:")
         equipment.name = form.querySelector('input[placeholder="Name"]').value
+        console.log(equipment.name)
+        console.log("AAAAAA, supplier:")
         equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
+        console.log(equipment.supplier)
+        console.log("AAAAAA, price:")
         equipment.price_eur = parseFloat(form.querySelector('input[placeholder="Price EUR"]').value).toFixed(2)
+        console.log(equipment.price_eur)
         console.log("inside getEquipmentFromForm, next line prints equipment")
         console.log(JSON.stringify(equipment))
         console.log("still inside getEquipmentFromForm")
@@ -434,7 +444,7 @@
                 }
             });
         }
-        console.log("indie buildQuery")
+        console.log("inside buildQuery")
         return Result;
     }
 

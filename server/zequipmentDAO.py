@@ -69,7 +69,7 @@ class EquipmentDAO:
     def convertToDictionary(self, result):
         
         # List of attributes - match html with colnames
-        colnames = ['id', 'category', 'name', 'supplier', 'price_eur', 'price_bc']
+        colnames = ['id', 'category', 'name', 'supplier', 'price_eur']
         
         # Empty dict
         item = {}
