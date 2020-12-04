@@ -78,26 +78,27 @@ def create():
     if not request.json:
         return "Wrong request"
         abort(400)
-    if not 'id' in request.json:
-        return "Wrong request"
-        abort(400)
+    #if not 'id' in request.json:
+        #return "Wrong request (id)"
+        #abort(400)
     
     equip = {
         "category": request.json['category'],
         "name": request.json['name'],
         "supplier": request.json['supplier'],
         "price_eur": request.json['price_eur']        
-    } 
+    }
+    # Make the tuple for DB
     values = (equip['category'], equip['name'], equip['supplier'], equip['price_eur'])
     newId = equipmentDAO.create(values) # possibly with 'z' before equipment
-    equipment['id'] = newId
+    equip['id'] = newId
     # return jsonify(equipment)
     # equipment.append(equip)
-    return jsonify({'equipment': equip}), 201
+    return jsonify(equip)
 # sample test
-# curl -i -H "Content-Type:application/json" -X POST -d '{"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}' http://localhost:5000/cars
+# curl -i -H "Content-Type:application/json" -X POST -d '{"category":"Tier 2","name":"Fiatto","supplier":"Puntto","price_eur":30.00}' http://localhost:5000/equipment
 # for windows use this one
-# curl -i -H "Content-Type:application/json" -X POST -d "{\"reg\":\"12 D 1234\",\"make\":\"Fiat\",\"model\":\"Punto\",\"price\":3000}" http://localhost:5000/cars
+# curl -i -H "Content-Type:application/json" -X POST -d "{\"category\":\"Tier 2\",\"name\":\"Fiatto\",\"supplier\":\"Puntto\",\"price_eur\":30.00}" http://localhost:5000/cars
 
 
 # ---- update ----
@@ -133,9 +134,9 @@ def update(id):
     equipmentDAO.update(values)
 
     return jsonify(foundEquipment)
-# curl -i -H "Content-Type:application/json" -X PUT -d '{"make":"Fiesta"}' http://localhost:5000/cars/181%20G%201234
+# curl -i -H "Content-Type:application/json" -X PUT -d '{"name":"Fiesta"}' http://localhost:5000/equipment/5
 # for windows use this one
-# curl -i -H "Content-Type:application/json" -X PUT -d "{\"make\":\"Fiesta\"}" http://localhost:5000/cars/181%20G%201234
+# curl -i -H "Content-Type:application/json" -X PUT -d "{\"name\":\"Fiesta\"}" http://localhost:5000/equipment/5
 
 
 @app.route('/equipment/<int:id>', methods=['DELETE'])

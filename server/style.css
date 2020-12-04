@@ -43,6 +43,7 @@ body
 	color: #eee;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
+	min-width: 650px;
 }
 
 header
@@ -180,7 +181,8 @@ h2
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
-	width: 950px;
+	min-width: 650px;
+	max-width: 950px;
 	margin-top: 4px;
 	margin-bottom: 10px;
 	display: table;
@@ -296,7 +298,8 @@ button:hover
 /* Links to other, external websites */
 .links
 {
-	width:950px;
+	min-width: 650px;
+	max-width: 750px;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
