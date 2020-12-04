@@ -109,31 +109,30 @@ def update(id):
         abort(404)
     if not request.json:
         return "Wrong request"
-        abort(400)
+        abort(400)        
+    reqJson = request.json
+
     # checks for data integrity
-    if 'category' in request.json and type(request.json['category']) != str:
+    '''
+    if ('price_eur' in reqJson) and (type(reqJson['price_eur']) is not float):
         abort(400)
-        return "Wrong request"
-    if 'name' in request.json and type(request.json['name']) != str:
-        abort(400)
-        return "Wrong request"
-    if 'supplier' in request.json and type(request.json['supplier']) is not str:
-        abort(400)
-        return "Wrong request"
-    if 'price_eur' in request.json and type(request.json['price_eur']) is not float:
-        abort(400)
-        return "Wrong request"
-
+        return "Wrong request or data type (should be float)"
+    '''
     if 'category' in request.json:
-        foundEquipment[0]['category'] = request.json.get('category', foundEquipment[0]['category'])
+        foundEquipment['category'] = reqJson['category']
     if 'name' in request.json:
-        foundEquipment[0]['name'] = request.json.get('name', foundEquipment[0]['name'])
+        foundEquipment['name'] = reqJson['name']
     if 'supplier' in request.json:
-        foundEquipment[0]['supplier'] = request.json.get('supplier', foundEquipment[0]['supplier'])
+        foundEquipment['supplier'] = reqJson['supplier']
     if 'price_eur' in request.json:
-        foundEquipment[0]['price_eur'] = request.json.get('price_eur', foundEquipment[0]['price_eur'])
+        foundEquipment['price_eur'] = reqJson['price_eur']
 
-    return jsonify({'equipment': foundEquipment[0]})
+    # Make the tuple for DB
+    values = (foundEquipment['category'], foundEquipment['name'], foundEquipment['supplier'], foundEquipment['price_eur'], foundEquipment['id'])
+    # Do the update on DB
+    equipmentDAO.update(values)
+
+    return jsonify(foundEquipment)
 # curl -i -H "Content-Type:application/json" -X PUT -d '{"make":"Fiesta"}' http://localhost:5000/cars/181%20G%201234
 # for windows use this one
 # curl -i -H "Content-Type:application/json" -X PUT -d "{\"make\":\"Fiesta\"}" http://localhost:5000/cars/181%20G%201234
