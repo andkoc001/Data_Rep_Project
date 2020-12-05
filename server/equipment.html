@@ -57,6 +57,8 @@
                     table</button>
                 <button id="showCreateButton" style="margin: 0px 10px;" type="button" onclick="showCreate()">Create a
                     new entry</button>
+                <button id="showExportButton" style="display: none;" type="button" onclick="doExport()">Export to
+                    file</button>
             </div>
             <div>
                 <table class="table" id="equipmentTable" style="color: #ddd; display: none;">
@@ -67,7 +69,7 @@
                         <th>Supplier</th>
                         <th>Price</th>
                         <!--
-                        <th>Cost in BitCoin</th>
+                            <th>Cost in BitCoin</th>
                         -->
                         <th>Update</th>
                         <th>Delete</th>
@@ -106,8 +108,8 @@
                     <input type="number" class="form-control" id="formInputPrice" placeholder="Price EUR">
 
                     <!-- Create and update buttons -->
-                    <button type="button" id="doCreateButton" onclick="doCreate()">Create</button>
-                    <button type="button" id="doUpdateButton" onclick="doUpdate()">Update</button>
+                    <button type="button" id="doCreateButton" onclick="doCreate()"">Create</button>
+                    <button type=" button" id="doUpdateButton" onclick="doUpdate()">Update</button>
                 </div>
             </form>
         </section>
@@ -160,6 +162,7 @@
         document.getElementById('updateLabel').style.display = "none"
         document.getElementById('doCreateButton').style.display = "none"
         document.getElementById('doUpdateButton').style.display = "none"
+        document.getElementById('showExportButton').style.display = "block"
 
     }
 
@@ -171,6 +174,7 @@
         document.getElementById('updateLabel').style.display = "none"
         document.getElementById('doCreateButton').style.display = "block"
         document.getElementById('doUpdateButton').style.display = "none"
+        document.getElementById('showExportButton').style.display = "none"
 
     }
 
@@ -190,6 +194,7 @@
         document.getElementById('updateLabel').style.display = "inline"
         document.getElementById('doCreateButton').style.display = "none"
         document.getElementById('doUpdateButton').style.display = "block"
+        document.getElementById('showExportButton').style.display = "none"
 
         var rowElement = buttonElement.parentNode.parentNode
         // these is a way of finding the closest <tr> which would safer, closest()
@@ -232,6 +237,11 @@
         var index = rowElement.rowIndex;
         deleteEquipmentAjax(rowElement.getAttribute("id"));
         tableElement.deleteRow(index);
+    }
+
+    function doExport() {
+        var equipmentList = document.getElementById('equipmentTable');
+        exportAjax()
     }
 
 
@@ -306,26 +316,44 @@
     function getEquipmentFromForm() {
         var form = document.getElementById('createUpdateForm')
         var equipment = {}
-        console.log("AAAAAA, id:")
+        // console.log("AAAAAA, id:")
         equipment.id = form.querySelector('input[name="id"]').value
-        console.log(equipment.id)
-        console.log("AAAAAA, category:")
+        // console.log(equipment.id)
+        // console.log("AAAAAA, category:")
         equipment.category = form.querySelector('select[placeholder="Category"]').value
-        console.log(equipment.category)
-        console.log("AAAAAA, name:")
+        // console.log(equipment.category)
+        // console.log("AAAAAA, name:")
         equipment.name = form.querySelector('input[placeholder="Name"]').value
-        console.log(equipment.name)
-        console.log("AAAAAA, supplier:")
+        // console.log(equipment.name)
+        // console.log("AAAAAA, supplier:")
         equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
-        console.log(equipment.supplier)
-        console.log("AAAAAA, price:")
+        // console.log(equipment.supplier)
+        // console.log("AAAAAA, price:")
         equipment.price_eur = parseFloat(form.querySelector('input[placeholder="Price EUR"]').value).toFixed(2)
-        console.log(equipment.price_eur)
-        console.log("inside getEquipmentFromForm, next line prints equipment")
-        console.log(JSON.stringify(equipment))
-        console.log("still inside getEquipmentFromForm")
+        // console.log(equipment.price_eur)
+        // console.log("inside getEquipmentFromForm, next line prints equipment")
+        // console.log(JSON.stringify(equipment))
+        // console.log("still inside getEquipmentFromForm")
         return equipment
     }
+
+
+
+    function exportAjax() {
+        $.ajax({
+            "url": "http://127.0.0.1:5000/export",
+            "method": "GET",
+            "data": "",
+            "dataType": "JSON",
+            "success": function (result) {
+                console.log(result);
+            },
+            "error": function (xhr, status, error) {
+                console.log("error: " + status + " msg:" + error);
+            }
+        });
+    }
+
 
 
     function getAllAjax() {
