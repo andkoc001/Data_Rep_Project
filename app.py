@@ -1,10 +1,10 @@
 #!flask/bin/python
 
-# Title: Data Representation Project
-# Author: Andrzej Kocielski, 2020; email: G00376291@gmit.ie, https://github.com/andkoc001/
+# Title: Data Representation Project, GMIT, 2020
+# Author: Andrzej Kocielski; email: G00376291@gmit.ie, https://github.com/andkoc001/
 # Description: Web App that consumes external API. The application is based on the lecture materials, and other sources quoted as they were used in the program.
-# Context: Data Representation, GMIT, 2020
-# Lecturer: dr Andrew Beatty
+# GitHub: https://github.com/andkoc001/Data_Rep_Project
+# Lecturer: Dr. Andrew Beatty
 ####################################
 
 
@@ -15,7 +15,7 @@
 
 # import git
 from flask import Flask, jsonify, request, abort, make_response, render_template
-from server.zequipmentDAO import equipmentDAO
+from static.zequipmentDAO import equipmentDAO
 import json
 
 app = Flask(__name__, static_url_path='', static_folder='.')
@@ -44,17 +44,22 @@ def home():
     # return "<h1>Welcome</h1>"
     return render_template("index.html")  # located in /template folder
 
-#curl "http://127.0.0.1:5000/equipment"
+# curl "http://127.0.0.1:5000/equipment"
 
 # ---- get all ----
-#@app.route('/equipment', methods=['GET'])
+# @app.route('/equipment', methods=['GET'])
+
+
 @app.route('/equipment')
 def getAll():
-    results = equipmentDAO.getAll() # check in not zequipmentDAO.getAll() <- with 'z' before equipment
+    # check in not zequipmentDAO.getAll() <- with 'z' before equipment
+    results = equipmentDAO.getAll()
     return jsonify(results)
 
 # ---- get by id ----
-#@app.route('/equipment/<int:id>', methods=['GET'])
+# @app.route('/equipment/<int:id>', methods=['GET'])
+
+
 @app.route('/equipment/<int:id>')
 def findById(id):
     foundEquipment = equipmentDAO.findByID(id)
@@ -69,28 +74,31 @@ def findById(id):
     #     return jsonify({'equipment': ''}, indent=4), 204
     #foundEquipment = equipmentDAO.findByID(id)
     return jsonify(foundEquipment)
-    #return jsonify({'equipment': foundEquipment[0]})
+    # return jsonify({'equipment': foundEquipment[0]})
 
 # ---- create ----
+
+
 @app.route('/equipment', methods=['POST'])
 def create():
-    # check if exist 
+    # check if exist
     if not request.json:
         return "Wrong request"
         abort(400)
-    #if not 'id' in request.json:
-        #return "Wrong request (id)"
-        #abort(400)
-    
+    # if not 'id' in request.json:
+        # return "Wrong request (id)"
+        # abort(400)
+
     equip = {
         "category": request.json['category'],
         "name": request.json['name'],
         "supplier": request.json['supplier'],
-        "price_eur": request.json['price_eur']        
+        "price_eur": request.json['price_eur']
     }
     # Make the tuple for DB
-    values = (equip['category'], equip['name'], equip['supplier'], equip['price_eur'])
-    newId = equipmentDAO.create(values) # possibly with 'z' before equipment
+    values = (equip['category'], equip['name'],
+              equip['supplier'], equip['price_eur'])
+    newId = equipmentDAO.create(values)  # possibly with 'z' before equipment
     equip['id'] = newId
     # return jsonify(equipment)
     # equipment.append(equip)
@@ -110,7 +118,7 @@ def update(id):
         abort(404)
     if not request.json:
         return "Wrong request"
-        abort(400)        
+        abort(400)
     reqJson = request.json
 
     # checks for data integrity
@@ -129,7 +137,8 @@ def update(id):
         foundEquipment['price_eur'] = reqJson['price_eur']
 
     # Make the tuple for DB
-    values = (foundEquipment['category'], foundEquipment['name'], foundEquipment['supplier'], foundEquipment['price_eur'], foundEquipment['id'])
+    values = (foundEquipment['category'], foundEquipment['name'],
+              foundEquipment['supplier'], foundEquipment['price_eur'], foundEquipment['id'])
     # Do the update on DB
     equipmentDAO.update(values)
 
@@ -146,7 +155,7 @@ def delete_car(id):
         return "That id does not exist in the database"
         abort(404)
     equipmentDAO.delete(id)
-    return jsonify({"done":True})
+    return jsonify({"done": True})
 
 
 # --------------------------------

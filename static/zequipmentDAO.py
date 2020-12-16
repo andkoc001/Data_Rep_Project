@@ -1,19 +1,21 @@
 import mysql.connector
-import server.dbconfig as cfg
+import static.dbconfig as cfg
 import json
 from flask import jsonify
 
 # create a class
-class EquipmentDAO:
-    
-    db=""
 
-    def connectToDB(self): # in case the line below does not work
+
+class EquipmentDAO:
+
+    db = ""
+
+    def connectToDB(self):  # in case the line below does not work
         self.db = mysql.connector.connect(
-            host = cfg.mysql['host'],
-            user = cfg.mysql['user'],
-            password = cfg.mysql['password'],
-            database = cfg.mysql['database']
+            host=cfg.mysql['host'],
+            user=cfg.mysql['user'],
+            password=cfg.mysql['password'],
+            database=cfg.mysql['database']
         )
 
     def __init__(self):
@@ -26,7 +28,7 @@ class EquipmentDAO:
 
     def create(self, values):
         cursor = self.db.cursor()
-        sql="INSERT INTO equipment (category, name, supplier, price_eur) values (%s,%s,%s,%s)"
+        sql = "INSERT INTO equipment (category, name, supplier, price_eur) values (%s,%s,%s,%s)"
         cursor.execute(sql, values)
         cursor.close()
         self.db.commit()
@@ -34,7 +36,7 @@ class EquipmentDAO:
 
     def getAll(self):
         cursor = self.db.cursor()
-        sql="SELECT * FROM equipment"
+        sql = "SELECT * FROM equipment"
         cursor.execute(sql)
         results = cursor.fetchall()
         cursor.close()
@@ -47,7 +49,7 @@ class EquipmentDAO:
 
     def findByID(self, id):
         cursor = self.db.cursor()
-        sql="SELECT * FROM equipment WHERE id = %s"
+        sql = "SELECT * FROM equipment WHERE id = %s"
         values = (id,)
         cursor.execute(sql, values)
         result = cursor.fetchone()
@@ -57,14 +59,14 @@ class EquipmentDAO:
 
     def update(self, values):
         cursor = self.db.cursor()
-        sql="UPDATE equipment SET category= %s, name= %s, supplier= %s, price_eur= %s  WHERE id = %s"
+        sql = "UPDATE equipment SET category= %s, name= %s, supplier= %s, price_eur= %s  WHERE id = %s"
         cursor.execute(sql, values)
         cursor.close()
         self.db.commit()
 
     def delete(self, id):
         cursor = self.db.cursor()
-        sql="DELETE FROM equipment WHERE id = %s"
+        sql = "DELETE FROM equipment WHERE id = %s"
         values = (id,)
         cursor.execute(sql, values)
         self.db.commit()
@@ -72,9 +74,9 @@ class EquipmentDAO:
         print("Delete done")
 
     # Converting tuple returned from DB into dictionary
-    def convertToDictionary(self, result):        
+    def convertToDictionary(self, result):
         # List of attributes - match html with colnames
-        colnames = ['id', 'category', 'name', 'supplier', 'price_eur']        
+        colnames = ['id', 'category', 'name', 'supplier', 'price_eur']
         # Empty dict
         item = {}
         # if result exist, enumerate through
