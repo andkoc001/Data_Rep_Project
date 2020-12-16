@@ -1,14 +1,25 @@
 /*
 Data Representation Project, GMIT 2020
 Author: Andrzej Kocielski, G00376291@gmit.ie
-GitHub: 
+GitHub: https://github.com/andkoc001/Data_Rep_Project
 Lecturer: Dr. Andrew Beatty
 */
 // ////////////////////
 
 
 // ////////////////////
-// Table CRUD manipulation
+// Display elements status
+
+function showDefaultDisplay() {
+  document.getElementById('showCreateButton').style.display = "inline"
+  document.getElementById('equipmentTable').style.display = "none"
+  document.getElementById('createUpdateForm').style.display = "none"
+  document.getElementById('createLabel').style.display = "none"
+  document.getElementById('updateLabel').style.display = "none"
+  document.getElementById('doCreateButton').style.display = "none"
+  document.getElementById('doUpdateButton').style.display = "none"
+  document.getElementById('showExportButton').style.display = "none"
+}
 
 function showTable() {
   document.getElementById('showCreateButton').style.display = "inline"
@@ -32,13 +43,11 @@ function showCreate() {
   document.getElementById('showExportButton').style.display = "none"
 }
 
-
 function showViewAll() {
   document.getElementById('showCreateButton').style.display = "block"
   document.getElementById('equipmentTable').style.display = "table"
   document.getElementById('createUpdateForm').style.display = "none"
 }
-
 
 function showUpdate(buttonElement) {
   document.getElementById('showCreateButton').style.display = "none"
@@ -57,6 +66,9 @@ function showUpdate(buttonElement) {
 }
 
 
+// ////////////////////
+// Table CRUD manipulation
+
 function doCreate() {
   var form = document.getElementById('createUpdateForm')
   var equipment = {}
@@ -71,7 +83,6 @@ function doCreate() {
   showViewAll()
 }
 
-
 function doUpdate() {
   console.log("inside doUpdate function");
   var equipment = getEquipmentFromForm();
@@ -84,7 +95,6 @@ function doUpdate() {
   showViewAll();
 }
 
-
 function doDelete(r) {
   var tableElement = document.getElementById('equipmentTable');
   var rowElement = r.parentNode.parentNode;
@@ -93,11 +103,19 @@ function doDelete(r) {
   tableElement.deleteRow(index);
 }
 
+
+// ////////////////////
+// Data base functions
+
 function doExport() {
   var equipmentList = document.getElementById('equipmentTable');
+
+  // https://stackoverflow.com/questions/22317951/export-html-table-data-to-excel-using-javascript-jquery-is-not-working-properl
+  var html = document.getElementById('equipmentTable').outerHTML;
+  window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+
   exportAjax()
 }
-
 
 function addEquipmentToTable(equipment) {
   var tableElement = document.getElementById('equipmentTable')
@@ -123,7 +141,6 @@ function addEquipmentToTable(equipment) {
   cell7.innerHTML = '<button class="table_entry_delete" onclick="doDelete(this)">Delete</button>'
 }
 
-
 function clearForm() {
   var form = document.getElementById('createUpdateForm')
   form.querySelector('select[placeholder="Category"]').value = ''
@@ -131,7 +148,6 @@ function clearForm() {
   form.querySelector('input[placeholder="Supplier"]').value = ''
   form.querySelector('input[placeholder="Price EUR"]').value = ''
 }
-
 
 function getEquipmentFromRow(rowElement) {
   var equipment = {}
@@ -144,7 +160,6 @@ function getEquipmentFromRow(rowElement) {
   return equipment
 }
 
-
 function setEquipmentInRow(rowElement, equipment) {
   rowElement.cells[0].firstChild.textContent = equipment.id
   rowElement.cells[1].firstChild.textContent = equipment.category
@@ -152,7 +167,6 @@ function setEquipmentInRow(rowElement, equipment) {
   rowElement.cells[3].firstChild.textContent = equipment.supplier
   rowElement.cells[4].firstChild.textContent = parseFloat(equipment.price_eur).toFixed(2)
 }
-
 
 function populateFormWithEquipment(equipment) {
   var form = document.getElementById('createUpdateForm')
@@ -165,7 +179,6 @@ function populateFormWithEquipment(equipment) {
   form.querySelector('input[placeholder="Price EUR"]').value = equipment.price_eur
   return equipment
 }
-
 
 function getEquipmentFromForm() {
   var form = document.getElementById('createUpdateForm')
@@ -214,8 +227,6 @@ function exportAjax() {
   });
 }
 
-
-
 function getAllAjax() {
   $.ajax({
     "url": host + "/equipment",
@@ -233,7 +244,6 @@ function getAllAjax() {
     }
   });
 }
-
 
 function createEquipmentAjax(equipment) {
   console.log("inside createEquipmentAjax function:")
@@ -257,7 +267,6 @@ function createEquipmentAjax(equipment) {
   });
 }
 
-
 function updateEquipmentAjax(equipment) {
   console.log("inside updateEqimpmentAjax function");
   console.log(JSON.stringify(equipment));
@@ -277,9 +286,7 @@ function updateEquipmentAjax(equipment) {
   });
 }
 
-
 function deleteEquipmentAjax(id) {
-
   //console.log(JSON.stringify('deleting '+id));
   $.ajax({
     "url": host + "/equipment/" + encodeURI(id),
@@ -317,6 +324,7 @@ function readJSON() {
     }
   });
 }
+
 
 // from https://stackoverflow.com/a/16017283
 function buildQuery(obj) {
@@ -379,4 +387,52 @@ function check(form) {
   if (form.u_name.value == "User" && form.psw.value == "GMIT") {
     window.open("start.html") // opens the target page while password matches
   }
+}
+
+
+
+// ////////////////////
+// TESTING - WORK IN PROGRESS
+
+// ////////////////////
+// Export to excel
+// https://stackoverflow.com/a/24081343
+
+function fnExcelReport() {
+  var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+  var textRange; var j = 0;
+  tab = document.getElementById('equipmentTable'); // id of table
+
+  for (j = 0; j < tab.rows.length; j++) {
+    tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+    //tab_text=tab_text+"</tr>";
+  }
+
+  tab_text = tab_text + "</table>";
+  tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
+  tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+  tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // removes input params
+
+  var ua = window.navigator.userAgent;
+  var msie = ua.indexOf("MSIE ");
+
+  if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
+  {
+    txtArea1.document.open("txt/html", "replace");
+    txtArea1.document.write(tab_text);
+    txtArea1.document.close();
+    txtArea1.focus();
+    sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+  }
+  else //other browser not tested on IE 11
+    sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+  return (sa);
+}
+
+// https://stackoverflow.com/questions/22317951/export-html-table-data-to-excel-using-javascript-jquery-is-not-working-properl
+function exportToExcel() {
+  var htmltable = document.getElementById('equipmentTable');
+  var html = htmltable.outerHTML;
+  window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
 }

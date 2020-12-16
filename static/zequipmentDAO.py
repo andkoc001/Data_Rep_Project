@@ -1,9 +1,24 @@
+#!flask/bin/python
+
+# Title: Data Representation Project, GMIT, 2020
+# Author: Andrzej Kocielski; email: G00376291@gmit.ie, https://github.com/andkoc001/
+# Description: Web App that consumes external API. The application is based on the lecture materials, and other sources quoted as they were used in the program.
+# GitHub: https://github.com/andkoc001/Data_Rep_Project
+# Lecturer: Dr. Andrew Beatty
+####################################
+
+# -------------------------------------
+# Import external modules and databases
+# -------------------------------------
+
 import mysql.connector
 import static.dbconfig as cfg
 import json
 from flask import jsonify
 
-# create a class
+# -------------------------------------
+# # create a class
+# -------------------------------------
 
 
 class EquipmentDAO:
@@ -86,6 +101,9 @@ class EquipmentDAO:
                 item[colName] = value
         return item
 
-
+# -------------------------------------
 # create instance of the class
+# -------------------------------------
+
+
 equipmentDAO = EquipmentDAO()

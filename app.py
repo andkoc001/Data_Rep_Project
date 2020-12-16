@@ -13,7 +13,7 @@
 # -------------------------------------
 
 
-# import git
+# import git # temporarily disabled
 from flask import Flask, jsonify, request, abort, make_response, render_template
 from static.zequipmentDAO import equipmentDAO
 import json
@@ -179,6 +179,7 @@ def not_found400(error):
 # -------------------------------
 # Based on: https://medium.com/@aadibajpai/deploying-to-pythonanywhere-via-github-6f967956e664
 
+# disabled temporarily - more testing needed
 '''
 @app.route('/update_server', methods=['POST'])
 def webhook():
