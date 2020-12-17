@@ -126,13 +126,13 @@ function addEquipmentToTable(equipment) {
   cell4.innerHTML = equipment.supplier
   var cell5 = rowElement.insertCell(4);
   cell5.innerHTML = parseFloat(equipment.price_eur).toFixed(2)
-  /*
+
   var cell6 = rowElement.insertCell(5); //
   cell6.innerHTML = '<button class="checkBitcoin" onclick="checkBitcoin(this)">Check</button>'
-  */
-  var cell6 = rowElement.insertCell(5);
+
+  var cell6 = rowElement.insertCell(6);
   cell6.innerHTML = '<button class="table_entry_update" onclick="showUpdate(this)">Update</button>'
-  var cell7 = rowElement.insertCell(6);
+  var cell7 = rowElement.insertCell(7);
   cell7.innerHTML = '<button class="table_entry_delete" onclick="doDelete(this)">Delete</button>'
 }
 
@@ -397,12 +397,41 @@ function bitcoinRate() {
     "success": function (result) {
       //console.log(result);
       var rate = result.bpi.EUR.rate
-      document.getElementById("outputBitcoin").innerText = "1 BitCoin = " + rate + " EUR";
+      document.getElementById("outputBitcoin").innerText = "1 BitCoin (Ƀ) = €" + rate;
     },
     "error": function (xhr, status, error) {
       //console.log("error: " + status + " msg:" + error);
       var rate = result.bpi.EUR.rate
       document.getElementById("outputBitcoin").innerText = rate;
+    }
+  });
+}
+
+function checkBitcoin(buttonElement) {
+
+  // get the price data from the row, where the button has been hit
+  var rowElement = buttonElement.parentNode.parentNode
+  var equipment = getEquipmentFromRow(rowElement)
+  console.log(JSON.stringify(equipment)); // for testing
+  // alert("test - price of the equipment: " + JSON.stringify(equipment.price_eur) + EUR) // for testing
+
+
+  $.ajax({
+    "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
+    "method": "GET",
+    "data": "",
+    "dataType": "JSON",
+    "success": function (result) {
+      var rate_str = result.bpi.EUR.rate;
+      var rate = parseFloat(rate_str.replace(",", "")); // remove coma and convert to float
+      var price_eur = equipment.price_eur;
+      var valueBC = price_eur / (parseFloat(rate).toFixed(2));
+      alert("Equipment id.:   \t" + equipment.id + " \t(" + equipment.name + ")\nPrice in euro: €" + price_eur + "\nCurrent exchange rate: " + rate + "\nValue in BitCoin: Ƀ" + parseFloat(valueBC).toFixed(6));
+    },
+    "error": function (xhr, status, error) {
+      //console.log("error: " + status + " msg:" + error);
+      // var rate = result.bpi.EUR.rate
+      // document.getElementById("outputBitcoin").innerText = rate;
     }
   });
 }
