@@ -23,6 +23,12 @@ function showDefaultDisplay() {
   document.getElementById('showExportButtonHTML').style.display = "none"
 }
 
+function showViewAll() {
+  document.getElementById('showCreateButton').style.display = "block"
+  document.getElementById('equipmentTable').style.display = "table"
+  document.getElementById('createUpdateForm').style.display = "none"
+}
+
 function showTable() {
   document.getElementById('showCreateButton').style.display = "inline"
   document.getElementById('equipmentTable').style.display = "table"
@@ -49,12 +55,6 @@ function showCreate() {
   document.getElementById('showExportButtonHTML').style.display = "none"
 }
 
-function showViewAll() {
-  document.getElementById('showCreateButton').style.display = "block"
-  document.getElementById('equipmentTable').style.display = "table"
-  document.getElementById('createUpdateForm').style.display = "none"
-}
-
 function showUpdate(buttonElement) {
   document.getElementById('showCreateButton').style.display = "none"
   document.getElementById('equipmentTable').style.display = "none"
@@ -63,10 +63,11 @@ function showUpdate(buttonElement) {
   document.getElementById('updateLabel').style.display = "inline"
   document.getElementById('doCreateButton').style.display = "none"
   document.getElementById('doUpdateButton').style.display = "block"
-  document.getElementById('showExportButton').style.display = "none"
+  document.getElementById('showExportButtonCSV').style.display = "none"
+  document.getElementById('showExportButtonJSON').style.display = "none"
+  document.getElementById('showExportButtonHTML').style.display = "none"
 
   var rowElement = buttonElement.parentNode.parentNode
-  // these is a way of finding the closest <tr> which would safer, closest()
   var equipment = getEquipmentFromRow(rowElement)
   populateFormWithEquipment(equipment)
 }
@@ -78,31 +79,29 @@ function showUpdate(buttonElement) {
 function doCreate() {
   var form = document.getElementById('createUpdateForm')
   var equipment = {}
-  console.log("inside doCreate function:")
-  console.log(JSON.stringify(equipment)) // for testing
+  console.log("inside doCreate function:");
   equipment.category = form.querySelector('select[placeholder="Category"]').value
   equipment.name = form.querySelector('input[placeholder="Name"]').value
   equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
   equipment.price_eur = form.querySelector('input[placeholder="Price EUR"]').value
-  console.log(JSON.stringify(equipment)) // for testing
+  // console.log(JSON.stringify(equipment)); // for testing
   createEquipmentAjax(equipment)
-  showViewAll()
+  showTable()
 }
 
 function doUpdate() {
   console.log("inside doUpdate function");
   var equipment = getEquipmentFromForm();
   var rowElement = document.getElementById(equipment.id);
-  console.log("inside doUpdate function - will do updateEquipmentAjax in the next line");
-  console.log(JSON.stringify(equipment));
+  // console.log(JSON.stringify(equipment)); // for testing
   updateEquipmentAjax(equipment);
   setEquipmentInRow(rowElement, equipment);
   clearForm();
-  showViewAll();
+  showTable();
 }
 
 function doDelete(r) {
-  var tableElement = document.getElementById('equipmentTable');
+  var tableElement = document.getElementById("equipmentTable");
   var rowElement = r.parentNode.parentNode;
   var index = rowElement.rowIndex;
   deleteEquipmentAjax(rowElement.getAttribute("id"));
@@ -152,7 +151,7 @@ function getEquipmentFromRow(rowElement) {
   equipment.name = rowElement.cells[2].firstChild.textContent
   equipment.supplier = rowElement.cells[3].firstChild.textContent
   equipment.price_eur = parseFloat(rowElement.cells[4].firstChild.textContent, 2)
-  console.log(equipment)
+  // console.log(equipment); 
   return equipment
 }
 
@@ -166,7 +165,7 @@ function setEquipmentInRow(rowElement, equipment) {
 
 function populateFormWithEquipment(equipment) {
   var form = document.getElementById('createUpdateForm')
-  console.log(form)
+  // console.log(form); // for testing
   form.querySelector('input[name="id"]').disabled = true
   form.querySelector('input[name="id"]').value = equipment.id
   form.querySelector('select[placeholder="Category"]').value = equipment.category
@@ -179,24 +178,13 @@ function populateFormWithEquipment(equipment) {
 function getEquipmentFromForm() {
   var form = document.getElementById('createUpdateForm')
   var equipment = {}
-  // console.log("AAAAAA, id:")
   equipment.id = form.querySelector('input[name="id"]').value
-  // console.log(equipment.id)
-  // console.log("AAAAAA, category:")
   equipment.category = form.querySelector('select[placeholder="Category"]').value
-  // console.log(equipment.category)
-  // console.log("AAAAAA, name:")
   equipment.name = form.querySelector('input[placeholder="Name"]').value
-  // console.log(equipment.name)
-  // console.log("AAAAAA, supplier:")
   equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
-  // console.log(equipment.supplier)
-  // console.log("AAAAAA, price:")
   equipment.price_eur = parseFloat(form.querySelector('input[placeholder="Price EUR"]').value).toFixed(2)
-  // console.log(equipment.price_eur)
-  // console.log("inside getEquipmentFromForm, next line prints equipment")
-  // console.log(JSON.stringify(equipment))
-  // console.log("still inside getEquipmentFromForm")
+  console.log(JSON.stringify(equipment));
+  // console.log("still inside getEquipmentFromForm"); // for testing
   return equipment
 }
 
@@ -270,17 +258,18 @@ function doExportJSON() {
     "data": "",
     "dataType": "JSON",
     "success": function (result) {
-      // console.log(result); // for testing
       for (equipment of result) {
         // console.log(equipment); // for testing
       }
-
-      // var equipmentList = document.getElementById('equipmentTable');
-      // console.log(equipmentTable) // for testing
-
-      r = JSON.stringify(result)
-      // console.log(JSON.stringify(result)) // for testing
-      window.open('data:application/vnd.ms-excel,' + encodeURIComponent(r));
+      result_json = JSON.stringify(result)
+      var html = document.getElementById('equipmentTable').outerHTML;
+      // Once we are done looping, download the .json by creating a link
+      let link = document.createElement('a')
+      link.id = 'download-json'
+      link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result_json));
+      link.setAttribute('download', 'equipment.json');
+      document.body.appendChild(link)
+      document.querySelector('#download-json').click()
 
     },
     "error": function (xhr, status, error) {
@@ -297,19 +286,20 @@ function doExportHTML() {
     "data": "",
     "dataType": "JSON",
     "success": function (result) {
-      // console.log(result);
       for (equipment of result) {
         // console.log(equipment);
       }
-
-      var equipmentList = document.getElementById('equipmentTable');
-      // console.log(result)
-
       // https://stackoverflow.com/questions/22317951/export-html-table-data-to-excel-using-javascript-jquery-is-not-working-properl
       var html = document.getElementById('equipmentTable').outerHTML;
-      window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
-
+      // Once we are done looping, download the .html by creating a link
+      let link = document.createElement('a')
+      link.id = 'download-html'
+      link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(html));
+      link.setAttribute('download', 'equipment.html');
+      document.body.appendChild(link)
+      document.querySelector('#download-html').click()
     },
+
     "error": function (xhr, status, error) {
       console.log("error: " + status + " msg:" + error);
     }
@@ -335,8 +325,8 @@ function getAllAjax() {
 }
 
 function createEquipmentAjax(equipment) {
-  console.log("inside createEquipmentAjax function:")
-  console.log(JSON.stringify(equipment)); // for testing
+  console.log("inside createEquipmentAjax function:");
+  // console.log(JSON.stringify(equipment)); // for testing
   $.ajax({
     "url": host + "/equipment",
     "method": "POST",
@@ -395,7 +385,10 @@ function deleteEquipmentAjax(id) {
 getAllAjax();
 
 
-function readJSON() {
+// ////////////////////
+// currency exchange 
+
+function bitcoinRate() {
   $.ajax({
     "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
     "method": "GET",
@@ -404,7 +397,7 @@ function readJSON() {
     "success": function (result) {
       //console.log(result);
       var rate = result.bpi.EUR.rate
-      document.getElementById("outputBitcoin").innerText = rate;
+      document.getElementById("outputBitcoin").innerText = "1 BitCoin = " + rate + " EUR";
     },
     "error": function (xhr, status, error) {
       //console.log("error: " + status + " msg:" + error);
@@ -414,25 +407,6 @@ function readJSON() {
   });
 }
 
-
-// from https://stackoverflow.com/a/16017283
-function buildQuery(obj) {
-  var Result = '';
-  if (typeof (obj) == 'object') {
-    jQuery.each(obj, function (key, value) {
-      Result += (Result) ? '&' : '';
-      if (typeof (value) == 'object' && value.length) {
-        for (var i = 0; i < value.length; i++) {
-          Result += [key + '[]', encodeURIComponent(value[i])].join('=');
-        }
-      } else {
-        Result += [key, encodeURIComponent(value)].join('=');
-      }
-    });
-  }
-  console.log("inside buildQuery")
-  return Result;
-}
 
 // ////////////////////
 // Scroll up to top of page functionality
@@ -474,7 +448,7 @@ var modal = document.getElementById('login_pop');
 function check(form) {
   // the following code checkes whether the entered password is matching 
   if (form.u_name.value == "User" && form.psw.value == "GMIT") {
-    window.open("start.html") // opens the target page while password matches
+    window.open("equipment.html") // opens the target page while password matches
   }
 }
 
@@ -482,46 +456,3 @@ function check(form) {
 
 // ////////////////////
 // TESTING - WORK IN PROGRESS
-
-// ////////////////////
-// Export to excel
-// https://stackoverflow.com/a/24081343
-
-function fnExcelReport() {
-  var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
-  var textRange; var j = 0;
-  tab = document.getElementById('equipmentTable'); // id of table
-
-  for (j = 0; j < tab.rows.length; j++) {
-    tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
-    //tab_text=tab_text+"</tr>";
-  }
-
-  tab_text = tab_text + "</table>";
-  tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
-  tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
-  tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // removes input params
-
-  var ua = window.navigator.userAgent;
-  var msie = ua.indexOf("MSIE ");
-
-  if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
-  {
-    txtArea1.document.open("txt/html", "replace");
-    txtArea1.document.write(tab_text);
-    txtArea1.document.close();
-    txtArea1.focus();
-    sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
-  }
-  else //other browser not tested on IE 11
-    sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
-
-  return (sa);
-}
-
-// https://stackoverflow.com/questions/22317951/export-html-table-data-to-excel-using-javascript-jquery-is-not-working-properl
-function exportToExcel() {
-  var htmltable = document.getElementById('equipmentTable');
-  var html = htmltable.outerHTML;
-  window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
-}

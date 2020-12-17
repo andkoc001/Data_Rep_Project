@@ -41,10 +41,10 @@
         <nav id="topnav">
             <!-- The top bar menu consists of unordered list (ul) elements (list items, li), styled with the CSS -->
             <ul class="menu">
-                <li><a href="../templates/index.html">Start</a></li>
-                <li><a href="equipment.html">Equipment</a></li>
+                <li><a href="../templates/index.html" style="font-weight: 700;">Login</a></li>
+                <li><a href="equipment.html" style="font-weight: 700;">Equipment</a></li>
                 <!-- This link is active, but does not require reloading the page -->
-                <li><a href="#">Suppliers</a></li>
+                <li><a href="#" style="font-weight: 700;">Suppliers</a></li>
             </ul>
         </nav>
     </header>
@@ -52,20 +52,26 @@
     <main class="mainsection">
         <section class="core">
             <h1>List of equipment</h1>
-            <div style="margin-bottom: 8px; width: 950px;">
-                <button id="showTableButton" style="margin: 0px 10px;" type="button" onclick="showTable()">
+            <div style="margin-bottom: 8px; width: 600px; margin-left: auto; margin-right: auto;">
+                <button id="showTableButton" style="margin: 0px 2px; width: 45%; font-weight: 700;" type="button"
+                    onclick="showTable()">
                     Show table</button>
-                <button id="showCreateButton" style="margin: 0px 10px;" type="button" onclick="showCreate()">
+                <button id="showCreateButton" style="margin: 0px 2px; width: 45%; font-weight: 700;" type="button"
+                    onclick="showCreate()">
                     Create a new entry</button>
             </div>
-            <div style="margin-bottom: 8px; width: 950px;">
-                <button id="showExportButtonCSV" style="display: none;" type="button" onclick="doExportCSV()">
+            <div style="margin-bottom: 8px; width: 600px; margin-left: auto; margin-right: auto;">
+                <button id="showExportButtonCSV" style="margin: 0px; width: 30%; display: none;" type="button"
+                    onclick="doExportCSV()">
                     Export to CSV</button>
-                <button id="showExportButtonJSON" style="display: none;" type="button" onclick="doExportJSON()">
+                <button id="showExportButtonJSON" style="margin: 0px; width: 30%; display: none;" type="button"
+                    onclick="doExportJSON()">
                     Export to JSON</button>
-                <button id="showExportButtonHTML" style="display: none;" type="button" onclick="doExportHTML()">
+                <button id="showExportButtonHTML" style="margin: 0px; width: 30%; display: none;" type="button"
+                    onclick="doExportHTML()">
                     Export to HTML</button>
             </div>
+            <div style="clear: both;"></div>
             <div>
                 <table class="table" id="equipmentTable" style="color: #ddd; display: none;">
                     <tr style="color: aquamarine;">
@@ -114,17 +120,17 @@
                     <input type="number" class="form-control" id="formInputPrice" placeholder="Price EUR">
 
                     <!-- Create and update buttons -->
-                    <button type="button" id="doCreateButton" onclick="doCreate()"">Create</button>
-                    <button type=" button" id="doUpdateButton" onclick="doUpdate()">Update</button>
+                    <button type="button" id="doCreateButton" onclick="doCreate()">Create</button>
+                    <button type=" button" id="doUpdateButton" onclick="doUpdate()">Done</button>
                 </div>
             </form>
         </section>
 
         <section class="core">
-            <h1>Bitcoin value from coindesk.com</h1>
+            <h1>BitCoin exchange rate</h1>
+            <p>The current value of the BitCoin, as per data retrieved from coindesk.com.</p>
             <span>
-
-                <div id="outputBitcoin"><button onclick="readJSON()">Check</button></div>
+                <div id="outputBitcoin"><button onclick="bitcoinRate()">Check</button></div>
             </span>
         </section>
     </main>
