@@ -18,7 +18,9 @@ function showDefaultDisplay() {
   document.getElementById('updateLabel').style.display = "none"
   document.getElementById('doCreateButton').style.display = "none"
   document.getElementById('doUpdateButton').style.display = "none"
-  document.getElementById('showExportButton').style.display = "none"
+  document.getElementById('showExportButtonCSV').style.display = "none"
+  document.getElementById('showExportButtonJSON').style.display = "none"
+  document.getElementById('showExportButtonHTML').style.display = "none"
 }
 
 function showTable() {
@@ -29,7 +31,9 @@ function showTable() {
   document.getElementById('updateLabel').style.display = "none"
   document.getElementById('doCreateButton').style.display = "none"
   document.getElementById('doUpdateButton').style.display = "none"
-  document.getElementById('showExportButton').style.display = "block"
+  document.getElementById('showExportButtonCSV').style.display = "inline"
+  document.getElementById('showExportButtonJSON').style.display = "inline"
+  document.getElementById('showExportButtonHTML').style.display = "inline"
 }
 
 function showCreate() {
@@ -40,7 +44,9 @@ function showCreate() {
   document.getElementById('updateLabel').style.display = "none"
   document.getElementById('doCreateButton').style.display = "block"
   document.getElementById('doUpdateButton').style.display = "none"
-  document.getElementById('showExportButton').style.display = "none"
+  document.getElementById('showExportButtonCSV').style.display = "none"
+  document.getElementById('showExportButtonJSON').style.display = "none"
+  document.getElementById('showExportButtonHTML').style.display = "none"
 }
 
 function showViewAll() {
@@ -106,16 +112,6 @@ function doDelete(r) {
 
 // ////////////////////
 // Data base functions
-
-function doExport() {
-  var equipmentList = document.getElementById('equipmentTable');
-
-  // https://stackoverflow.com/questions/22317951/export-html-table-data-to-excel-using-javascript-jquery-is-not-working-properl
-  var html = document.getElementById('equipmentTable').outerHTML;
-  window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
-
-  exportAjax()
-}
 
 function addEquipmentToTable(equipment) {
   var tableElement = document.getElementById('equipmentTable')
@@ -204,12 +200,97 @@ function getEquipmentFromForm() {
   return equipment
 }
 
+
 // ////////////////////
 // AJAX 
 
 host = window.location.origin
 
-function exportAjax() {
+// 3rd attempt - csv file
+function doExportCSV() {
+  $.ajax({
+    "url": host + "/equipment",
+    "method": "GET",
+    "data": "",
+    "dataType": "JSON",
+    "success": function (result) {
+      console.log(result); // for testing
+      // for (equipment of result) {
+      // console.log(equipment); 
+      // }
+
+      ///////
+      // https://stackoverflow.com/a/44397534
+      let csv = ""
+      // Loop the array of objects
+      for (let row = 0; row < result.length; row++) {
+        let keysAmount = Object.keys(result[row]).length
+        let keysCounter = 0
+        // If this is the first row, generate the headings
+        if (row === 0) {
+          // Loop each property of the object
+          for (let key in result[row]) {
+            // This is to not add a comma at the last cell; The '\r\n' adds a new line
+            csv += key + (keysCounter + 1 < keysAmount ? ',' : '\r\n')
+            keysCounter++
+          }
+        } else {
+          for (let key in result[row]) {
+            csv += result[row][key] + (keysCounter + 1 < keysAmount ? ',' : '\r\n')
+            keysCounter++
+          }
+        }
+        keysCounter = 0
+      }
+
+      // Once we are done looping, download the .csv by creating a link
+      let link = document.createElement('a')
+      link.id = 'download-csv'
+      link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csv));
+      link.setAttribute('download', 'equipment.csv');
+      document.body.appendChild(link)
+      document.querySelector('#download-csv').click()
+
+      ///////
+
+      // window.open('data:application/vnd.ms-excel,' + encodeURIComponent(r));
+
+    },
+    "error": function (xhr, status, error) {
+      console.log("error: " + status + " msg:" + error);
+    }
+  });
+}
+
+// 2nd attempt - json file
+function doExportJSON() {
+  $.ajax({
+    "url": host + "/equipment",
+    "method": "GET",
+    "data": "",
+    "dataType": "JSON",
+    "success": function (result) {
+      // console.log(result); // for testing
+      for (equipment of result) {
+        // console.log(equipment); // for testing
+      }
+
+      // var equipmentList = document.getElementById('equipmentTable');
+      // console.log(equipmentTable) // for testing
+
+      r = JSON.stringify(result)
+      // console.log(JSON.stringify(result)) // for testing
+      window.open('data:application/vnd.ms-excel,' + encodeURIComponent(r));
+
+    },
+    "error": function (xhr, status, error) {
+      console.log("error: " + status + " msg:" + error);
+    }
+  });
+}
+
+// 1st attempt - html file
+function doExportHTML() {
   $.ajax({
     "url": host + "/equipment",
     "method": "GET",
@@ -218,8 +299,16 @@ function exportAjax() {
     "success": function (result) {
       // console.log(result);
       for (equipment of result) {
-        console.log(equipment);
+        // console.log(equipment);
       }
+
+      var equipmentList = document.getElementById('equipmentTable');
+      // console.log(result)
+
+      // https://stackoverflow.com/questions/22317951/export-html-table-data-to-excel-using-javascript-jquery-is-not-working-properl
+      var html = document.getElementById('equipmentTable').outerHTML;
+      window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+
     },
     "error": function (xhr, status, error) {
       console.log("error: " + status + " msg:" + error);

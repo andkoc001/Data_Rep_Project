@@ -9,8 +9,7 @@
 
 # -------------------------------------
 # Import external modules and databases
-# -------------------------------------
-
+# ------------------------------------
 import mysql.connector
 import static.dbconfig as cfg
 import json

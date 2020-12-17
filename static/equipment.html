@@ -53,12 +53,18 @@
         <section class="core">
             <h1>List of equipment</h1>
             <div style="margin-bottom: 8px; width: 950px;">
-                <button id="showTableButton" style="margin: 0px 10px;" type="button" onclick="showTable()">Show
-                    table</button>
-                <button id="showCreateButton" style="margin: 0px 10px;" type="button" onclick="showCreate()">Create a
-                    new entry</button>
-                <button id="showExportButton" style="display: none;" type="button" onclick="doExport()">Export to
-                    file</button>
+                <button id="showTableButton" style="margin: 0px 10px;" type="button" onclick="showTable()">
+                    Show table</button>
+                <button id="showCreateButton" style="margin: 0px 10px;" type="button" onclick="showCreate()">
+                    Create a new entry</button>
+            </div>
+            <div style="margin-bottom: 8px; width: 950px;">
+                <button id="showExportButtonCSV" style="display: none;" type="button" onclick="doExportCSV()">
+                    Export to CSV</button>
+                <button id="showExportButtonJSON" style="display: none;" type="button" onclick="doExportJSON()">
+                    Export to JSON</button>
+                <button id="showExportButtonHTML" style="display: none;" type="button" onclick="doExportHTML()">
+                    Export to HTML</button>
             </div>
             <div>
                 <table class="table" id="equipmentTable" style="color: #ddd; display: none;">
