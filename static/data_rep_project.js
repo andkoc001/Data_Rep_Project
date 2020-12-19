@@ -382,6 +382,7 @@ function deleteEquipmentAjax(id) {
     }
   });
 }
+
 getAllAjax();
 
 
@@ -414,8 +415,6 @@ function checkBitcoin(buttonElement) {
   var equipment = getEquipmentFromRow(rowElement)
   console.log(JSON.stringify(equipment)); // for testing
   // alert("test - price of the equipment: " + JSON.stringify(equipment.price_eur) + EUR) // for testing
-
-
   $.ajax({
     "url": "https://api.coindesk.com/v1/bpi/currentprice.json ",
     "method": "GET",
@@ -485,3 +484,18 @@ function check(form) {
 
 // ////////////////////
 // TESTING - WORK IN PROGRESS
+
+
+// logout
+function logout() {
+  $.ajax({
+    "url": "/",
+    "method": "GET",
+    "data": "",
+    "dataType": "JSON",
+    "success": function (result) {
+    },
+    "error": function (xhr, status, error) {
+    }
+  });
+}

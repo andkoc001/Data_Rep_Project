@@ -28,10 +28,14 @@ app.secret_key = 'secretkeythatonly77shouldknow'
 
 # local stored data
 """ equipment=[
-    {"id": 1, "category": "Tier 1", "name":"CNC 2000", "supplier":"CNC machines Ltd", "price_eur":25762.50, "price_bc": null},
-    {"id": 2, "category": "Tier 1", "name":"Las-Weld-Super", "supplier":"Weld Masters", "price_eur":16543.00, "price_bc": null},
-    {"id": 3, "category": "Spare", "name":"Scanner RFID", "supplier":"Ocularify", "price_eur":499.99, "price_bc": null},
-    {"id": 4, "category": "Tier 2", "name":"Deburr Cleaner", "supplier":"Weld Masters", "price_eur":899.00, "price_bc": null},
+    {"id": 1, "category": "Tier 1", "name":"CNC 2000",
+        "supplier":"CNC machines Ltd", "price_eur":25762.50, "price_bc": null},
+    {"id": 2, "category": "Tier 1", "name":"Las-Weld-Super",
+        "supplier":"Weld Masters", "price_eur":16543.00, "price_bc": null},
+    {"id": 3, "category": "Spare", "name":"Scanner RFID",
+        "supplier":"Ocularify", "price_eur":499.99, "price_bc": null},
+    {"id": 4, "category": "Tier 2", "name":"Deburr Cleaner",
+        "supplier":"Weld Masters", "price_eur":899.00, "price_bc": null},
     {"id": 5, "category": "Tier 1", "name":"Conveyer 500x100", "supplier":"Line Optim", "price_eur":`12850.00, "price_bc": null},
 ] """
 
@@ -55,63 +59,79 @@ users.append(User(username='gmit', password='gmit'))
 users.append(User(username='Gundolf', password='typefriendandenter'))
 
 
-# @app.before_request
-# def before_request():
-#     g.user = None
-
-#     if 'user_id' in session:
-#         user = [x for x in users if x.id == session['user_id']][0]
-#         g.user = user
-
-
 # -----------
 # Flask routs - login
 # -----------
 
 
-@app.route('/')
-def home():
-    # session['username'] = "gmit"
-    if not 'username' in session:
-        return redirect(url_for('login2'))
-
-    # return 'welcome ' + session['username'] + '<br><a href="'+url_for('logout')+'">logout</a>'
-    # return redirect(url_for('getData'))
-    return render_template('equipment.html')
+# @app.before_request
+# def before_request():
+# session.pop('username', None)
 
 
 @app.route('/login')
 def login():
-    # return '<h1> login</h1> ' +\
-    #     '<button>' +\
-    #     '<a href="'+url_for('proccess_login')+'">' +\
-    #     'login' +\
-    #     '</a>' +\
-    #     '</button>'
-    return render_template("index.html")
+    return '<h1> login </h1> ' +\
+        '<button>' +\
+        '<a href="'+url_for('proccess_login')+'">' + 'login' + '</a>' +\
+        '</button>'
+
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    # session['username'] = "gmit"
+    # session.pop('username', None)
+    if not 'username' in session:
+        # return "inside home()1" # test ok
+        return render_template('index.html')
+
+    # return 'welcome ' + session['username'] # test ok
+    return render_template('equipment.html')
 
 
 @app.route('/login2', methods=['GET', 'POST'])
 def login2():
+    # session['username'] = "gmit"
+    # session.pop('username', None)
+    # if not 'username' in session:
     if request.method == 'POST':
         # do stuff when the form is submitted
         session.pop('username', None)
 
-        username = request.form['username']
+        username = request.args.get('username', request.form['username'])
+        # password = request.args.get('password', request.form['password'])
+
+        # username = request.form['username']
         # password = request.form['password']
 
-        # user = [x for x in users if x.username == username][0]
-        # if user and user.password == password:
-        #     session['username'] = username
-        if session['username'] == "gmit":  # and session['password'] == "gmit":
-            session['username'] = username
-            return redirect(url_for('process_login'))
+        username = str(username)
+        # return "inside login2()1 - " + username # test ok
+        return redirect(url_for('processlogin2', username=username))
+
+    # return 'welcome ' + session['username'] + '<br><a href="'+url_for('logout')+'">logout</a>'
+    # return "inside login2()2" # test ok
+    return render_template('equipment.html')
+
+
+@ app.route('/porcesslogin2/<username>', methods=['GET', 'POST'])
+def processlogin2(username):
+    # return "inside processlogin2() 1"  # test ok
+    # if not 'username' in session:
+
+    if (username == "gmit"):  # and (password == "gmit"):
+        # return "inside processlogin2() 3"  # test ok
+        session['username'] = username
+        # return render_template('logout.html')
+        return render_template('equipment.html')
 
     # show the form, it wasn't submitted
-    return render_template('index.html')
+    # return redirect(url_for('home'))
+    return "inside processlogin2() 4"  # test ok
+    session.pop('username', None)
+    return render_template('equipment.html')
 
 
-@app.route('/login3', methods=['GET', 'POST'])
+@ app.route('/login3', methods=['GET', 'POST'])
 def login3():
     if request.method == 'POST':
         print(request.form['username'])
@@ -123,24 +143,24 @@ def login3():
     '''
 
 
-# @app.route('/processlogin')
-# def proccess_login():
-#     # check credentials # if bad redirect to login page again
-#     if username == gmit and password == gmit:
-#         session['username'] = username
+@ app.route('/processlogin')
+def proccess_login():
+    # check credentials # if bad redirect to login page again
+    if username == gmit and password == gmit:
+        session['username'] = username
 
-#     # else
-#     # session['username'] = "gmit"
-#     return redirect(url_for('home'))
+    # else
+    # session['username'] = "gmit"
+    return redirect(url_for('home'))
 
 
-@app.route('/logout')
+@ app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
 
 
-@app.route('/data')
+@ app.route('/data')
 def getData():
     if not 'username' in session:
         abort(401)
@@ -152,8 +172,11 @@ def getData():
 # -----------
 
 
-@app.route('/equipment')
+@ app.route('/equipment')
 def getAll():
+    session['username'] = "I dunno"
+    if not 'username' in session:
+        abort(401)
     # check in not zequipmentDAO.getAll() <- with 'z' before equipment
     results = equipmentDAO.getAll()
     return jsonify(results)
@@ -162,10 +185,13 @@ def getAll():
 # @app.route('/equipment/<int:id>', methods=['GET'])
 
 
-@app.route('/equipment/<int:id>')
+@ app.route('/equipment/<int:id>')
 def findById(id):
-    foundEquipment = equipmentDAO.findByID(id)
+    session['username'] = "I dunno"
+    if not 'username' in session:
+        abort(401)
 
+    foundEquipment = equipmentDAO.findByID(id)
     # Check if id exists
     if not foundEquipment:
         return "That id not found in the database"
@@ -174,15 +200,18 @@ def findById(id):
     # foundEquipment = list(filter(lambda t: t['id'] == id, equipment))
     # if len(foundEquipment) == 0:
     #     return jsonify({'equipment': ''}, indent=4), 204
-    #foundEquipment = equipmentDAO.findByID(id)
+    # foundEquipment = equipmentDAO.findByID(id)
     return jsonify(foundEquipment)
     # return jsonify({'equipment': foundEquipment[0]})
 
 # ---- create ----
 
 
-@app.route('/equipment', methods=['POST'])
+@ app.route('/equipment', methods=['POST'])
 def create():
+    if not 'username' in session:
+        abort(401)
+
     # check if exist
     if not request.json:
         return "Wrong request"
@@ -212,8 +241,11 @@ def create():
 
 
 # ---- update ----
-@app.route('/equipment/<int:id>', methods=['PUT'])
+@ app.route('/equipment/<int:id>', methods=['PUT'])
 def update(id):
+    if not 'username' in session:
+        abort(401)
+
     foundEquipment = equipmentDAO.findByID(id)
     if not foundEquipment:
         return "That id not found in the database"
@@ -250,8 +282,11 @@ def update(id):
 # curl -i -H "Content-Type:application/json" -X PUT -d "{\"name\":\"Fiesta\"}" http://localhost:5000/equipment/5
 
 
-@app.route('/equipment/<int:id>', methods=['DELETE'])
+@ app.route('/equipment/<int:id>', methods=['DELETE'])
 def delete_car(id):
+    if not 'username' in session:
+        abort(401)
+
     foundEquipment = equipmentDAO.findByID(id)
     if not foundEquipment:
         return "That id does not exist in the database"
