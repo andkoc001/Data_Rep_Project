@@ -52,7 +52,7 @@ class User:
 users = []
 users.append(User(username='Andrzej', password='password'))
 users.append(User(username='gmit', password='gmit'))
-users.append(User(username='Gundolf', password='youshallnotpass'))
+users.append(User(username='Gundolf', password='typefriendandenter'))
 
 
 # @app.before_request
@@ -71,13 +71,13 @@ users.append(User(username='Gundolf', password='youshallnotpass'))
 
 @app.route('/')
 def home():
-    # return render_template("index.html")  # located in /template folder
-
+    # session['username'] = "gmit"
     if not 'username' in session:
         return redirect(url_for('login2'))
 
     # return 'welcome ' + session['username'] + '<br><a href="'+url_for('logout')+'">logout</a>'
-    return redirect(url_for('getData'))
+    # return redirect(url_for('getData'))
+    return render_template('equipment.html')
 
 
 @app.route('/login')
@@ -98,17 +98,29 @@ def login2():
         session.pop('username', None)
 
         username = request.form['username']
-        password = request.form['password']
+        # password = request.form['password']
 
         # user = [x for x in users if x.username == username][0]
         # if user and user.password == password:
         #     session['username'] = username
-        if session['username'] == "gmit" and session['password'] == "gmit":
-            # session['username'] = username
-            return redirect(url_for('getData'))
+        if session['username'] == "gmit":  # and session['password'] == "gmit":
+            session['username'] = username
+            return redirect(url_for('process_login'))
 
     # show the form, it wasn't submitted
     return render_template('index.html')
+
+
+@app.route('/login3', methods=['GET', 'POST'])
+def login3():
+    if request.method == 'POST':
+        print(request.form['username'])
+
+    return '''
+        <form method="POST"> Name: <input name="username" type="text">
+        <input type="submit">
+        </form>
+    '''
 
 
 # @app.route('/processlogin')
@@ -125,7 +137,7 @@ def login2():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return 'here'
+    return redirect(url_for('home'))
 
 
 @app.route('/data')

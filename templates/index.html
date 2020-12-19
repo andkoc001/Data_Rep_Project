@@ -37,24 +37,19 @@
             <!-- Login box, adopted from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_login_form_modal-->
             <div id="login_pop" class="modal">
 
-                <form class="modal-content animate" method="POST">
+                <form class="modal-content animate" method="POST" action="/equipment">
 
                     <div id="loginbox">
                         <label for="username"><b>Username</b><span style="color: #f80; font-size: 11px;">
                                 (required)</span></label>
                         <input name="username" type="text" placeholder="Enter Username" value="gmit" required>
 
-                        <label for="password"><b>Password</b> <span style="font-size: 11px;"> (disabled for
+                        <!-- <label for="password"><b>Password</b> <span style="font-size: 11px;"> (disabled for
                                 testing)</span></label>
                         <input name="password" type="password" placeholder="Disabled while testing" value="gmit"
-                            required disabled>
+                            required disabled> -->
 
-                        <!-- Below line is a JavaScript validation, disabled for simplicity -->
-                        <!-- <button class="reset" type="reset" value="Reset" style="width: 100%;"> Reset </button> -->
                         <input type="reset" class="reset" value="Reset" style="width: 100%;" />
-
-                        <!-- Below line is a JavaScript validation, disabled for simplicity -->
-                        <!-- <button class="submit" type="submit" onclick="check(this.form)" style="width: 100%;"> Login </button> -->
                         <input type="submit" class="submit" value="Login" style="width: 100%;" />
                     </div>
 
@@ -66,7 +61,7 @@
                 </form>
                 <div class="core" style="width: 400px;">
                     <p style="margin: 20px 0px;">Skip the authentication over and go directly to <a
-                            href="/templates/equipment.html" style="color: #9df; text-decoration: none;">Equipment
+                            href="../templates/equipment.html" style="color: #9df; text-decoration: none;">Equipment
                             Autonomus
                             Maintenance</a></p>
                 </div>
