@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Reference to external style file (overrides the bootstrap style, because it is placed below in this file -->
+    <link rel="stylesheet" href="../static/style_login.css" type="text/css" />
     <link rel="stylesheet" href="../static/style.css" type="text/css" />
     <!-- AJAX reference -->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.js"></script>
@@ -26,16 +27,54 @@
 </head>
 
 <body>
+    <header>
+        <!-- this is a semantic tag - more in start.html file -->
+        <h1 class="logo_title"> Welcome to my </br>Data Rep Project </h1>
+    </header>
 
     <main class="mainsection">
-        <h1>Welcome to my Data Representation Project</h1>
-        <section class="core">
-            </br>
+        <section>
+            <!-- Login box, adopted from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_login_form_modal-->
+            <div id="login_pop" class="modal">
 
-            <p>Here will come the login page.</p>
-            <p>Proceed to <a href="../static/equipment.html">Equipment Autonomus Maintenance</a></p>
+                <form class="modal-content animate" action="../static/equipment.html" method="GET">
+
+                    <div id="loginbox">
+                        <label for="u_name"><b>Username</b><span style="color: #f80; font-size: 11px;">
+                                (required)</span></label>
+                        <input name="u_name" type="text" placeholder="Enter Username" value="gmit" required>
+
+                        <label for="passw"><b>Password</b> <span style="font-size: 11px;"> (disabled for
+                                testing)</span></label>
+                        <input name="passw" type="password" placeholder="Disabled while testing" value="gmit" required
+                            disabled>
+
+                        <!-- Below line is a JavaScript validation, disabled for simplicity -->
+                        <!-- <button class="reset" type="reset" value="Reset" style="width: 100%;"> Reset </button> -->
+                        <input type="reset" class="reset" value="Reset" style="width: 100%;" />
+
+                        <!-- Below line is a JavaScript validation, disabled for simplicity -->
+                        <!-- <button class="submit" type="submit" onclick="check(this.form)" style="width: 100%;"> Login </button> -->
+                        <input type="submit" class="submit" value="Login" style="width: 100%;" />
+                    </div>
+
+                    <div class="hint">
+                        For testing purposes, the Username is '<b>gmit</b>'. </br>
+                        Password is already provided for testing only.
+                    </div>
+
+                </form>
+                <div class="core" style="width: 400px;">
+                    <p style="margin: 20px 0px;">Skip over to <a href="../static/equipment.html"
+                            style="color: #9df; text-decoration: none;">Equipment Autonomus
+                            Maintenance</a></p>
+                </div>
+            </div>
         </section>
     </main>
+
+    <button onclick="topFunction()" id="toTop" title="Go to top">Top</button>
+
 </body>
 
 </html>

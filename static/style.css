@@ -19,6 +19,7 @@ for_reference_only /* Non existing element, but left here because my IDE shows t
 	
 	color: #eee; /* 1st text colour - main text */
 	color: #bbd; /* 2nd text colour, in-text links */
+	color: #9BC; /* 3nd text colour, placeholders */
 	
 	color: #9df; /* 1st headline colour, section title */
 	
@@ -70,6 +71,28 @@ h1.logo_title
 
 /* ### ### ### */
 
+/* unvisited link */
+a:link {
+		color: #eee;
+}
+
+/* visited link */
+a:visited {
+		color: #eee;
+}
+
+/* mouse over link */
+a:hover {
+		color: #eee;
+}
+
+/* selected link */
+a:active {
+		color: #eee;
+}
+
+/* ### ### ### */
+
 /* Navigation Bar */
 #topnav
 {
@@ -114,7 +137,7 @@ h1.logo_title
 
 .menu a:hover
 {
-	background-color: #04a;
+	background-color: #049;
 	color: #fd7;
 }
 
@@ -254,18 +277,18 @@ button:hover
 }
 
 ::placeholder {
-  color: lightblue;
+  color: #9BC;
   opacity: 1; /* Firefox */
 }
 .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-            color: lightblue;
+            color: #9BC;
             opacity: 1; /* Firefox */
 }
 .form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: lightblue;
+            color: #9BC;
 }
 .form-control::-ms-input-placeholder { /* Microsoft Edge */
-						color: lightblue;
+						color: #9BC;
 }
 
 /* ### ### ### */
@@ -310,6 +333,26 @@ button:hover
 	color: #bbd;
 }	
 
+
+.links a
+{
+	text-decoration: none;
+	display: block;
+	padding: 0px 15px;
+}
+
+a:links
+{
+	color: #eee;
+	text-decoration: none;	
+	display: block;	
+}
+
+.links a:hover
+{
+	text-decoration: none;
+}
+
 /* Defines style for the boxes in the footer linking to the GMIT website */
 .gmit
 {
@@ -348,13 +391,6 @@ button:hover
 {
 	background-color: #139fd7;
 }	
-
-a.link
-{
-	color: #eee;
-	text-decoration: none;	
-	display: block;	
-}
 
 
 /* ### ### ### */

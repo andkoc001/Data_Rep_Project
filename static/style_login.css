@@ -1,0 +1,120 @@
+/*
+Title: Data Representation Project, GMIT 2020
+Author: Andrzej Kocielski, G00376291@gmit.ie
+GitHub: https://github.com/andkoc001/Data_Rep_Project
+Lecturer: Dr. Andrew Beatty
+Styles adopted from: https://github.com/andkoc001/Web_App_Dev/blob/master/Project/style.css
+*/
+
+
+/* ### ### ### */
+/* Login page; adopted from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_login_form_modal */
+
+
+/* Defines properties (mostly visual) for all buttons of this class */
+.submit
+{
+	background-color: #05a;
+	color: #fd7;
+	font-weight: 700;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	border-radius: 0px;
+	float: left;
+}
+
+.submit:hover
+{
+	opacity: 0.8;
+}
+
+/* The below defines the style of buttons with the .reset class, removing already provided (but not submitted) content in the forms */
+.reset
+{
+	background-color: #a32;
+	color: #fd7;
+	font-weight: 700;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	border-radius: 0px;
+	float: right;
+}
+
+.reset:hover
+{
+	opacity: .8;
+}
+
+
+/* ### ### ### */
+/*Login window, adopted from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_login_form_modal
+
+/* --- --- --- */
+/* Centre the form */
+#loginbox
+{
+	padding: 16px;
+}
+
+.hint
+{
+	background-color: #234;
+	font-size: 12px;
+	padding: 5px 18px;
+}
+
+/* The Modal (login box) */
+.modal
+{
+	display: block;
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	padding-top: 40px;
+}
+
+/* Modal Content/Box */
+.modal-content
+{
+	background-color: #334;
+	margin: 100px auto 10px auto; /* 100px from the top, 10px from the bottom and centered */
+	border: 2px solid #777;
+	width:  50%;   
+	max-width: 400px;
+	min-width: 300px;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=email], input[type=password], input[type=address], input[type=tel]
+{
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	box-sizing: border-box;
+	background-color: #eee;
+}
+
+textarea, input[type=date], input[type=time], input[type=number]
+{
+	background-color: #eee;
+}
+
+/* Add Zoom Animation */
+.animate {
+	animation: animatezoom 0.4s
+}
+
+@keyframes animatezoom
+{
+	from {transform: scale(.5)} 
+	to {transform: scale(1)}
+}
