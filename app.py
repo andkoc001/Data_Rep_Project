@@ -14,11 +14,12 @@
 
 
 # import git # temporarily disabled
-from flask import Flask, jsonify, request, abort, make_response, render_template
+from flask import Flask, jsonify, request, abort, make_response, render_template, session, redirect, url_for, g
 from static.zequipmentDAO import equipmentDAO
 import json
 
 app = Flask(__name__, static_url_path='', static_folder='.')
+app.secret_key = 'secretkeythatonly77shouldknow'
 
 
 # ----------------
@@ -35,19 +36,108 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 ] """
 
 # -----------
-# Flask routs
+# Login, based on https://youtu.be/2Zz97NVbH0U
+# -----------
+
+
+class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    def __repr__(self):
+        return f'<User: {self.username}>'
+
+
+users = []
+users.append(User(username='Andrzej', password='password'))
+users.append(User(username='gmit', password='gmit'))
+users.append(User(username='Gundolf', password='youshallnotpass'))
+
+
+# @app.before_request
+# def before_request():
+#     g.user = None
+
+#     if 'user_id' in session:
+#         user = [x for x in users if x.id == session['user_id']][0]
+#         g.user = user
+
+
+# -----------
+# Flask routs - login
 # -----------
 
 
 @app.route('/')
 def home():
-    # return "<h1>Welcome</h1>"
-    return render_template("index.html")  # located in /template folder
+    # return render_template("index.html")  # located in /template folder
 
-# curl "http://127.0.0.1:5000/equipment"
+    if not 'username' in session:
+        return redirect(url_for('login2'))
 
-# ---- get all ----
-# @app.route('/equipment', methods=['GET'])
+    # return 'welcome ' + session['username'] + '<br><a href="'+url_for('logout')+'">logout</a>'
+    return redirect(url_for('getData'))
+
+
+@app.route('/login')
+def login():
+    # return '<h1> login</h1> ' +\
+    #     '<button>' +\
+    #     '<a href="'+url_for('proccess_login')+'">' +\
+    #     'login' +\
+    #     '</a>' +\
+    #     '</button>'
+    return render_template("index.html")
+
+
+@app.route('/login2', methods=['GET', 'POST'])
+def login2():
+    if request.method == 'POST':
+        # do stuff when the form is submitted
+        session.pop('username', None)
+
+        username = request.form['username']
+        password = request.form['password']
+
+        # user = [x for x in users if x.username == username][0]
+        # if user and user.password == password:
+        #     session['username'] = username
+        if session['username'] == "gmit" and session['password'] == "gmit":
+            # session['username'] = username
+            return redirect(url_for('getData'))
+
+    # show the form, it wasn't submitted
+    return render_template('index.html')
+
+
+# @app.route('/processlogin')
+# def proccess_login():
+#     # check credentials # if bad redirect to login page again
+#     if username == gmit and password == gmit:
+#         session['username'] = username
+
+#     # else
+#     # session['username'] = "gmit"
+#     return redirect(url_for('home'))
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return 'here'
+
+
+@app.route('/data')
+def getData():
+    if not 'username' in session:
+        abort(401)
+    return '{"data":"all here"}'
+
+
+# -----------
+# Flask routs - data management
+# -----------
 
 
 @app.route('/equipment')
