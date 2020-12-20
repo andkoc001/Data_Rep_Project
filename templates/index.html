@@ -37,26 +37,24 @@
             <!-- Login box, adopted from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_login_form_modal-->
             <div id="login_pop" class="modal">
 
-                <form class="modal-content animate" method="POST" action="/login">
+                <form class="modal-content animate" method="POST" action="/accessdenied">
 
                     <div id="loginbox">
                         <label for="username"><b>Username</b><span style="color: #f80; font-size: 11px;">
                                 (required)</span></label>
                         <input name="username" type="text" placeholder="Enter Username" value="gmit" required>
 
-                        <!-- <label for="password"><b>Password</b> <span style="font-size: 11px;"> (disabled for
-                                testing)</span></label> -->
-                        <!-- <input name="password" type="password" placeholder="Disabled while testing" value="gmit"
-                            required disabled> -->
+                        <label for="password"><b>Password</b> <span style="font-size: 11px;"> (disabled for
+                                testing)</span></label>
+                        <input name="password" type="password" placeholder="Enter Password" value="gmit" required>
 
                         <input type="reset" class="reset" value="Reset" style="width: 100%;" />
                         <input type="submit" class="submit" value="Login" style="width: 100%;" />
                     </div>
 
                     <div class="hint">
-                        For testing purposes, the Username is '<b>gmit</b>'. </br>
-                        Password is already provided for testing only.
-                    </div>
+                        For testing purposes, please use >> <b>gmit</b>
+                        << for both Username and Password. </div>
 
                 </form>
                 <div class="core" style="width: 400px;">

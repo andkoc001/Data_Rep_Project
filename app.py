@@ -90,21 +90,24 @@ def home():
     return render_template('equipment.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/accessdenied', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # do stuff when the form is submitted
         session.pop('username', None)
 
         username = request.args.get('username', request.form['username'])
-        # password = request.args.get('password', request.form['password'])
+        password = request.args.get('password', request.form['password'])
 
         # username = request.form['username']
         # password = request.form['password']
 
         username = str(username)
         # return "inside login()1 - " + username # test ok
-        return redirect(url_for('accessdatabase', username=username))
+        if (username == "gmit") and (password == "gmit"):
+            session['username'] = username
+            # return "inside accessdatabase() 3"  # test ok
+            return redirect(url_for('accessdatabase', username=username))
 
     # return "inside login()2" # test ok
     return render_template('equipment.html')
@@ -112,16 +115,13 @@ def login():
 
 @ app.route('/accessdatabase/<username>', methods=['GET', 'POST'])
 def accessdatabase(username):
-    # check credentials
     # return "inside accessdatabase() 1"  # test ok
-    if (username == "gmit"):  # and (password == "gmit"):
-        session['username'] = username
-        # return "inside accessdatabase() 3"  # test ok
-        return render_template('equipment.html')
+    # check credentials
+    #     return render_template('equipment.html')
 
-    # show the form, it wasn't submitted
-    # return "inside accessdatabase() 4"  # test ok
-    session.pop('username', None)
+    # # show the form, it wasn't submitted
+    # # return "inside accessdatabase() 4"  # test ok
+    # session.pop('username', None)
     return render_template('equipment.html')
 
 
