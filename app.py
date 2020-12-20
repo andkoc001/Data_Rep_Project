@@ -66,11 +66,12 @@ users.append(User(username='Gundolf', password='typefriendandenter'))
 
 # @app.before_request
 # def before_request():
-# session.pop('username', None)
+#     session.clear()
+#     # session.pop('username', None)
 
 
-@app.route('/login')
-def login():
+@app.route('/loginold')
+def loginold():
     return '<h1> login </h1> ' +\
         '<button>' +\
         '<a href="'+url_for('proccess_login')+'">' + 'login' + '</a>' +\
@@ -89,11 +90,8 @@ def home():
     return render_template('equipment.html')
 
 
-@app.route('/login2', methods=['GET', 'POST'])
-def login2():
-    # session['username'] = "gmit"
-    # session.pop('username', None)
-    # if not 'username' in session:
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
         # do stuff when the form is submitted
         session.pop('username', None)
@@ -105,28 +103,24 @@ def login2():
         # password = request.form['password']
 
         username = str(username)
-        # return "inside login2()1 - " + username # test ok
-        return redirect(url_for('processlogin2', username=username))
+        # return "inside login()1 - " + username # test ok
+        return redirect(url_for('accessdatabase', username=username))
 
-    # return 'welcome ' + session['username'] + '<br><a href="'+url_for('logout')+'">logout</a>'
-    # return "inside login2()2" # test ok
+    # return "inside login()2" # test ok
     return render_template('equipment.html')
 
 
-@ app.route('/porcesslogin2/<username>', methods=['GET', 'POST'])
-def processlogin2(username):
-    # return "inside processlogin2() 1"  # test ok
-    # if not 'username' in session:
-
+@ app.route('/accessdatabase/<username>', methods=['GET', 'POST'])
+def accessdatabase(username):
+    # check credentials
+    # return "inside accessdatabase() 1"  # test ok
     if (username == "gmit"):  # and (password == "gmit"):
-        # return "inside processlogin2() 3"  # test ok
         session['username'] = username
-        # return render_template('logout.html')
+        # return "inside accessdatabase() 3"  # test ok
         return render_template('equipment.html')
 
     # show the form, it wasn't submitted
-    # return redirect(url_for('home'))
-    return "inside processlogin2() 4"  # test ok
+    # return "inside accessdatabase() 4"  # test ok
     session.pop('username', None)
     return render_template('equipment.html')
 
@@ -174,7 +168,7 @@ def getData():
 
 @ app.route('/equipment')
 def getAll():
-    session['username'] = "I dunno"
+    # session['username'] = "I dunno"
     if not 'username' in session:
         abort(401)
     # check in not zequipmentDAO.getAll() <- with 'z' before equipment
