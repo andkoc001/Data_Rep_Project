@@ -31,6 +31,12 @@ The goal of the project is to produce a web app that will do the following:
 
 The detailed project instruction can be found in the [file]<https://github.com/andkoc001/Data_Rep_Project.git/blob/main/Project%20Description.pdf>  
 
+### The database
+
+The SQL database used for this project consists of one table "equipment". It schema looks as per below image:
+
+![equipment-schema](static/equipment-schema.png)
+
 ___
 
 ## Assignment delivery
