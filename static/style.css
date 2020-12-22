@@ -71,19 +71,19 @@ h1.logo_title
 
 /* ### ### ### */
 
-/* unvisited link */
+/* links */
 a:link {
-		color: #eee;
+		color: #9df;
 }
 
 /* visited link */
 a:visited {
-		color: #eee;
+		color: #9df;
 }
 
 /* mouse over link */
 a:hover {
-		color: #eee;
+		color: #9df;
 }
 
 /* selected link */
@@ -330,27 +330,33 @@ button:hover
 	background-color: #334;
 	margin-top: 20px;
 	padding: 0;
-	color: #bbd;
 }	
 
 
-.links a
+.links a:link
 {
 	text-decoration: none;
 	display: block;
 	padding: 0px 15px;
+	color: #eee;
 }
 
-a:links
+.links a:visited
 {
-	color: #eee;
-	text-decoration: none;	
-	display: block;	
+	text-decoration: none;
+	color: #eee
 }
 
 .links a:hover
 {
 	text-decoration: none;
+	color: #eee
+}
+
+.links a:active
+{
+	text-decoration: none;
+	color: #eee
 }
 
 /* Defines style for the boxes in the footer linking to the GMIT website */

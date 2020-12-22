@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- Data Representation Project, GMIT 2020 -->
+<!-- Author: Andrzej Kocielski, G00376291@gmit.ie -->
+<!-- GitHub: https://github.com/andkoc001/Data_Rep_Project -->
+<!-- Lecturer: Dr. Andrew Beatty -->
+
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Data Rep Project - Autonomous Maintenance</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Representation Project, GMIT 2020">
+    <meta name="author" content="Andrzej Kocielski, G00376291@gmit.ie">
+
+    <!-- Bootstrap style file -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Reference to external style file (overrides the bootstrap style, because it is placed below in this file -->
+    <link rel="stylesheet" href="../static/style.css" type="text/css" />
+    <!-- AJAX reference -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.js"></script>
+    <!-- https://www.faviconcodegenerator.com/prevent-favicon-404-error.php -->
+    <!-- <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo="> -->
+</head>
+
+<body onload="showDefaultDisplay()">
+    <header>
+        <div>
+            <h1 class="logo_title">Equipment Autonomous Maintenance</h1>
+            <div class="picture">
+                <img src="https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy"
+                    alt="Source: https://diginomica.com/sites/default/files/styles/article_images_desktop/public/images/2019-09/shutterstock-%20wilaporn1973-1503679208.jpg?itok=NZVM6aIy" /></br>
+                <div class="caption"> Image source: <a
+                        href="https://diginomica.com/fail-early-fail-often-manufacturing-mantra-ai-age"
+                        target="_blank">diginomica.com</a></div>
+            </div>
+        </div>
+
+        <!-- Top navigation bar -->
+        <nav id="topnav">
+            <!-- The top bar menu consists of unordered list (ul) elements (list items, li), styled with the CSS -->
+            <ul class="menu">
+                <li><a href="/logout" style="font-weight: 700; color: #f80;" onclick="return logout();">Logout</a>
+                </li>
+                <li><a href="../templates/equipment.html" style="font-weight: 700;">Equipment</a></li>
+                <!-- This link is active, but does not require reloading the page -->
+                <li><a href="#" style="font-weight: 700;">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="mainsection">
+        <section class="core" style="text-align: justify;">
+            <h1>About</h1>
+            <div style="margin-bottom: 8px; width: 800px; margin-left: auto; margin-right: auto;">
+                <p>
+                    This web site is part of assignment for Data Representeation, under the <a
+                        href="[https://www.gmit.ie/computer-science-and-applied-physics/higher-diploma-science-computing-data-analytics-ict">Higher
+                        Diploma in science in
+                        computing (Data Analitics)</a> at Galway-Mayo Insititute of Technology, Ireland.
+                </p>
+            </div>
+            <h2 style="text-align: center;">Industry 4.0</h2>
+            <div style="margin-bottom: 8px; width: 800px; margin-left: auto; margin-right: auto;">
+                <p>
+                    The term Industry 4.0 is a shorthand for the forth industry revolution. It means the unification of
+                    the real world of production machines with the virtual world of the Internet and information
+                    technology. It involves the information exchange between the machines, and IT systems (Internet of
+                    Things). Its application extends also beyond production andmay encompas, among others, continuous
+                    machinery diagonstics and promote overall equipment efficiency.
+                </p>
+            </div>
+            <h2 style="text-align: center;">Autonomous Equipment Maintenance</h2>
+            <div style="margin-bottom: 8px; width: 800px; margin-left: auto; margin-right: auto;">
+                <p>
+                    Equipment degrades all the time and need to be maintained continuously in order to fulfill its
+                    mission (<a
+                        href="http://system.logistics-and-transport.eu/index.php/main/article/view/509">Operating
+                        Determinants of Maintaining the Operational State of Container Terminal Equipment</a>).
+                </p>
+                <p>
+                    Application fo the Industry 4.0, Internet of Things, Big Data and related technologies for equipment
+                    maintenance allows for the process automation (<a
+                        href="https://www.reliableplant.com/autonomous-maintenance-31712">Autonomous Maintenance: What
+                        It Is and Why It Matters - ReliablePlant</a>). The stream of data coming from the condition
+                    monitoring sensors after suitable processing enhance the chance to recognise the optimal time for
+                    pre-brakedown intervention, and so improving the equipment lifecycle. The data when coupled with
+                    suitable machine learning algorithms, may bring numerous benefits (<a
+                        href="https://www.uptake.com/platform">AI and Machine Learning engines for industry</a>), such
+                    as failure prediction (predicts probability of future failures with historical data plus current
+                    conditions) or anomaly detection (analyzes current conditions to identify deviations from normal
+                    operating behavior).
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <!-- This section holds links to the external websites -->
+        <div class="links">
+            <div style="width: 600px; margin-left: auto; margin-right: auto;">
+                <div class="gmit">
+                    <a href="https://www.gmit.ie/" target="_blank"> GMIT </a>
+                </div>
+                <div class="gh">
+                    <a href="https://github.com/andkoc001" target="_blank"> GitHub </a>
+                </div>
+                <div class="pa">
+                    <a href="http://andkoc001.pythonanywhere.com/" target="_blank"> PythonAnywhere </a>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+        </div>
+
+        <div class="info">
+            Andrzej Kocielski (G00376291@gmit.ie), 2020
+        </div>
+    </footer>
+
+    <!-- This button appears when the page is scrolled down bt 50px (see the Java Script file) and, when clicked, brings the web page back to the top -->
+    <button onclick="topFunction()" id="toTop" title="Top">Go to Top</button>
+</body>
+
+<script src="../static/data_rep_project.js"></script>
+
+</html>
