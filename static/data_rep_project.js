@@ -165,7 +165,7 @@ function setEquipmentInRow(rowElement, equipment) {
 
 function populateFormWithEquipment(equipment) {
   var form = document.getElementById('createUpdateForm')
-  // console.log(form); // for testing
+  console.log(form); // for testing
   form.querySelector('input[name="id"]').disabled = true
   form.querySelector('input[name="id"]').value = equipment.id
   form.querySelector('select[placeholder="Category"]').value = equipment.category
@@ -184,7 +184,7 @@ function getEquipmentFromForm() {
   equipment.supplier = form.querySelector('input[placeholder="Supplier"]').value
   equipment.price_eur = parseFloat(form.querySelector('input[placeholder="Price EUR"]').value).toFixed(2)
   console.log(JSON.stringify(equipment));
-  // console.log("still inside getEquipmentFromForm"); // for testing
+  console.log("still inside getEquipmentFromForm"); // for testing
   return equipment
 }
 
@@ -202,18 +202,20 @@ function doExportCSV() {
     "data": "",
     "dataType": "JSON",
     "success": function (result) {
-      console.log(result); // for testing
-      // for (equipment of result) {
-      // console.log(equipment); 
-      // }
+      // console.log(result); // for testing
+      for (equipment of result) {
+        console.log(equipment);
+      }
 
       ///////
       // https://stackoverflow.com/a/44397534
       let csv = ""
+
       // Loop the array of objects
       for (let row = 0; row < result.length; row++) {
         let keysAmount = Object.keys(result[row]).length
         let keysCounter = 0
+
         // If this is the first row, generate the headings
         if (row === 0) {
           // Loop each property of the object
@@ -222,7 +224,8 @@ function doExportCSV() {
             csv += key + (keysCounter + 1 < keysAmount ? ',' : '\r\n')
             keysCounter++
           }
-        } else {
+        }
+        else {
           for (let key in result[row]) {
             csv += result[row][key] + (keysCounter + 1 < keysAmount ? ',' : '\r\n')
             keysCounter++
@@ -259,8 +262,9 @@ function doExportJSON() {
     "dataType": "JSON",
     "success": function (result) {
       for (equipment of result) {
-        // console.log(equipment); // for testing
+        console.log(equipment); // for testing
       }
+
       result_json = JSON.stringify(result)
       var html = document.getElementById('equipmentTable').outerHTML;
       // Once we are done looping, download the .json by creating a link
@@ -463,16 +467,14 @@ function topFunction() {
 // Input validation
 
 // -----------------
-// Login to server
+// Login to server; adopted from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_login_form_modal
 
-// Adopted from: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_login_form_modal
 // Open the modal (login box)
 var modal = document.getElementById('login_pop');
 
 // -----------------
 // The following is a JavaScript verification function 
 // Adopted from: https://www.daniweb.com/programming/web-development/code/330933/a-simple-html-login-page-using-javascript
-// Disabled (not in use) because of its limits; the built-in HTML5 form verification is used instead
 function check(form) {
   // the following code checkes whether the entered password is matching 
   if (form.u_name.value == "User" && form.psw.value == "GMIT") {
@@ -481,10 +483,8 @@ function check(form) {
 }
 
 
-
 // ////////////////////
 // TESTING - WORK IN PROGRESS
-
 
 // logout
 function logout() {
