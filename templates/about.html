@@ -40,9 +40,9 @@
         <!-- Top navigation bar -->
         <nav id="topnav">
             <ul class="menu">
-                <li><a href="/logout" style="font-weight: 700; color: #f80;" onclick="return logout();">Logout</a>
+                <li><a href="/logout" onclick="return logout();" style="font-weight: 700; color: #f80;">Logout</a>
                 </li>
-                <li><a href="../templates/equipment.html" style="font-weight: 700;">Equipment</a></li>
+                <li><a href="/" onclick="return home();" style="font-weight: 700;">Equipment</a></li>
                 <!-- This link is active, but does not require reloading the page -->
                 <li><a href="#" style="font-weight: 700;">About</a></li>
             </ul>
@@ -55,7 +55,8 @@
             <div style="margin-bottom: 8px; width: 800px; margin-left: auto; margin-right: auto;">
                 <p>
                     This web site is part of assignment for Data Representeation, under the <a
-                        href="https://www.gmit.ie/computer-science-and-applied-physics/higher-diploma-science-computing-data-analytics-ict">Higher
+                        href="https://www.gmit.ie/computer-science-and-applied-physics/higher-diploma-science-computing-data-analytics-ict"
+                        target="_blank">Higher
                         Diploma in science in
                         computing (Data Analitics)</a> at Galway-Mayo Insititute of Technology, Ireland.
                 </p>
@@ -74,19 +75,21 @@
             <div style="margin-bottom: 8px; width: 800px; margin-left: auto; margin-right: auto;">
                 <p>
                     Equipment degrades all the time and need to be maintained continuously in order to fulfill its
-                    mission (<a
-                        href="http://system.logistics-and-transport.eu/index.php/main/article/view/509">Operating
+                    mission (<a href="http://system.logistics-and-transport.eu/index.php/main/article/view/509 target="
+                        _blank"">Operating
                         Determinants of Maintaining the Operational State of Container Terminal Equipment</a>).
                 </p>
                 <p>
                     Application fo the Industry 4.0, Internet of Things, Big Data and related technologies for equipment
                     maintenance allows for the process automation (<a
-                        href="https://www.reliableplant.com/autonomous-maintenance-31712">Autonomous Maintenance: What
+                        href="https://www.reliableplant.com/autonomous-maintenance-31712 target=" _blank"">Autonomous
+                        Maintenance: What
                         It Is and Why It Matters - ReliablePlant</a>). The stream of data coming from the condition
                     monitoring sensors after suitable processing enhance the chance to recognise the optimal time for
                     pre-brakedown intervention, and so improving the equipment lifecycle. The data when coupled with
                     suitable machine learning algorithms, may bring numerous benefits (<a
-                        href="https://www.uptake.com/platform">AI and Machine Learning engines for industry</a>), such
+                        href="https://www.uptake.com/platform" target="_blank">AI and Machine Learning engines for
+                        industry</a>), such
                     as failure prediction (predicts probability of future failures with historical data plus current
                     conditions) or anomaly detection (analyzes current conditions to identify deviations from normal
                     operating behavior).
