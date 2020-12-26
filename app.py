@@ -26,7 +26,7 @@ app.secret_key = 'secretkeythatonly77shouldknow'
 # Initial data for testing
 # ----------------
 
-# local stored data
+# local stored data - for testing
 """ equipment=[
     {"id": 1, "category": "Tier 1", "name":"CNC 2000",
         "supplier":"CNC machines Ltd", "price_eur":25762.50, "price_bc": null},
@@ -93,17 +93,17 @@ def login():
             return redirect(url_for('accessdatabase', username=username))
 
     # return "inside login()2" # test ok
-    return render_template('equipment.html')
+    return redirect(url_for('about'))
 
-
-@ app.route('/accessdatabase/<username>', methods=['GET', 'POST'])
+@app.route('/accessdatabase/<username>', methods=['GET', 'POST'])
 def accessdatabase(username):
     # return "inside accessdatabase() 1"  # test ok
     return render_template('equipment.html')
 
 
-@ app.route('/logout')
+@app.route('/logout')
 def logout():
+    # return "inside logout() 1"  # test ok
     session.pop('username', None)
     return redirect(url_for('home'))
 
@@ -112,9 +112,37 @@ def logout():
 # Flask routs - data management
 # -----------
 
+
+# ---- read ----
+
+@app.route('/equipment')
+def getAll():
+    # session['username'] = "I dunno"
+    if not 'username' in session:
+        abort(401)
+
+    results = equipmentDAO.getAll()
+    return jsonify(results)
+
+
+@app.route('/equipment/<int:id>')
+def findById(id):
+    if not 'username' in session:
+        abort(401)
+
+    foundEquipment = equipmentDAO.findByID(id)
+
+    # Check if id exists
+    if not foundEquipment:
+        return "That id has not been found in the equipment database."
+        abort(404)
+
+    return jsonify(foundEquipment)
+
+
 # ---- create ----
 
-@ app.route('/equipment', methods=['POST'])
+@app.route('/equipment', methods=['POST'])
 def create():
     if not 'username' in session:
         abort(401)
@@ -123,9 +151,9 @@ def create():
     if not request.json:
         return "Wrong request"
         abort(400)
-    if not 'id' in request.json:
-        return "Wrong request (id)"
-        abort(400)
+    # if not 'id' in request.json:
+    #     return "Wrong request (id)"
+    #     abort(400)
 
     equip = {
         "category": request.json['category'],
@@ -142,41 +170,13 @@ def create():
 
 
 # sample test
-# curl -i -H "Content-Type:application/json" -X POST -d '{"category":"Tier 2","name":"Fiatto","supplier":"Puntto","price_eur":30.00}' http://localhost:5000/equipment
+# curl -i -H "Content-Type:application/json" -X POST -d '{"category":"Tier 2","name":"Elwirka","supplier":"Elwro","price_eur":30000.00}' http://localhost:5000/equipment
 # for windows use this one
-# curl -i -H "Content-Type:application/json" -X POST -d "{\"category\":\"Tier 2\",\"name\":\"Fiatto\",\"supplier\":\"Puntto\",\"price_eur\":30.00}" http://localhost:5000/cars
-
-
-# ---- read ----
-
-@ app.route('/equipment')
-def getAll():
-    # session['username'] = "I dunno"
-    if not 'username' in session:
-        abort(401)
-
-    results = equipmentDAO.getAll()
-    return jsonify(results)
-
-
-@ app.route('/equipment/<int:id>')
-def findById(id):
-    if not 'username' in session:
-        abort(401)
-
-    foundEquipment = equipmentDAO.findByID(id)
-
-    # Check if id exists
-    if not foundEquipment:
-        return "That id was been found in the equipment database."
-        abort(404)
-
-    return jsonify(foundEquipment)
-
+# curl -i -H "Content-Type:application/json" -X POST -d "{\"category\":\"Tier 2\",\"name\":\"Elwirka\",\"supplier\":\"Elwro\",\"price_eur\":30000.00}" http://localhost:5000/equipment
 
 # ---- update ----
 
-@ app.route('/equipment/<int:id>', methods=['PUT'])
+@app.route('/equipment/<int:id>', methods=['PUT'])
 def update(id):
     if not 'username' in session:
         abort(401)
@@ -215,15 +215,15 @@ def update(id):
     return jsonify(foundEquipment)
 
 # for Linux
-# curl -i -H "Content-Type:application/json" -X PUT -d '{"name":"Fiesta"}' http://localhost:5000/equipment/5
+# curl -i -H "Content-Type:application/json" -X PUT -d '{"name":"Odra"}' http://localhost:5000/equipment/5
 # for Windows use this one
-# curl -i -H "Content-Type:application/json" -X PUT -d "{\"name\":\"Fiesta\"}" http://localhost:5000/equipment/5
+# curl -i -H "Content-Type:application/json" -X PUT -d "{\"name\":\"Odra\"}" http://localhost:5000/equipment/5
 
 
 # ---- delete ----
 
-@ app.route('/equipment/<int:id>', methods=['DELETE'])
-def delete_car(id):
+@app.route('/equipment/<int:id>', methods=['DELETE'])
+def delete_equipment(id):
     if not 'username' in session:
         abort(401)
 
@@ -233,6 +233,19 @@ def delete_car(id):
         abort(404)
     equipmentDAO.delete(id)
     return jsonify({"done": True})
+
+
+# --------------------------------
+# Getting static pages
+# --------------------------------
+
+@app.route('/about')
+def about():
+    # return "inside about()1" # test ok
+    # if not 'username' in session:
+    #     return render_template('index.html')
+
+    return render_template('about.html')
 
 
 # --------------------------------
@@ -254,4 +267,4 @@ def not_found400(error):
 # ------------------
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False) # set for production
